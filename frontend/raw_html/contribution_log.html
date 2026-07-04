@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ank | My Contribution</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700;800&amp;family=Space+Mono:wght@400;700&amp;family=Work+Sans:wght@400;500;600&amp;family=Cabin+Sketch:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --sketch-border: 2px solid #2d4a3e;
+            --hard-shadow: 4px 4px 0px 0px #2d4a3e;
+        }
+        
+        body {
+            background-color: #f8faf9;
+            color: #2d4a3e;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .sketch-font {
+            font-family: 'Cabin Sketch', cursive;
+        }
+
+        .brutalist-card {
+            border: var(--sketch-border);
+            position: relative;
+            background-color: #ffffff;
+            transition: transform 0.1s ease-in-out;
+        }
+
+        .brutalist-card::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: -6px;
+            bottom: -6px;
+            background-color: #2d4a3e;
+            z-index: -1;
+        }
+
+        .jitter-border {
+            border: 2px solid #2d4a3e;
+            border-radius: 2px;
+            box-shadow: 2px 2px 0px #2d4a3e;
+        }
+
+        .hatch-pattern {
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(45, 74, 62, 0.05) 10px,
+                rgba(45, 74, 62, 0.05) 20px
+            );
+        }
+
+        .taped-corner {
+            position: relative;
+        }
+        .taped-corner::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 40px;
+            height: 15px;
+            background: rgba(45, 74, 62, 0.15);
+            transform: rotate(-35deg);
+            border: 1px solid rgba(45, 74, 62, 0.2);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .active-nav-shadow {
+            box-shadow: 4px 4px 0px 0px #2d4a3e;
+        }
+
+        /* Sidebar Transition */
+        #sidebar {
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #sidebar.collapsed {
+            width: 80px;
+        }
+        #sidebar.collapsed .nav-text {
+            display: none;
+        }
+        #sidebar.collapsed .sidebar-header {
+            align-items: center;
+        }
+        #sidebar.collapsed .logo-full {
+            display: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#404941",
+                      "primary-fixed": "#2d4a3e",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f2f4f3",
+                      "surface": "#f8faf9",
+                      "on-error-container": "#410002",
+                      "on-secondary-fixed": "#0d2007",
+                      "on-tertiary-container": "#151e17",
+                      "on-background": "#2d4a3e",
+                      "tertiary-fixed": "#dbe5da",
+                      "on-secondary-container": "#131f0d",
+                      "background": "#f8faf9",
+                      "tertiary": "#526350",
+                      "on-surface-variant": "#424943",
+                      "inverse-primary": "#abcfb8",
+                      "on-primary-fixed-variant": "#2d4d3c",
+                      "on-tertiary": "#ffffff",
+                      "outline-variant": "#c1c8c2",
+                      "secondary-container": "#dce6d4",
+                      "on-tertiary-fixed": "#151e17",
+                      "secondary-fixed-dim": "#b6cea8",
+                      "surface-variant": "#dee5df",
+                      "error": "#ba1a1a",
+                      "on-secondary": "#ffffff",
+                      "on-surface": "#2d4a3e",
+                      "tertiary-container": "#d7e8d3",
+                      "surface-dim": "#d8dada",
+                      "on-primary": "#ffffff",
+                      "surface-tint": "#456553",
+                      "outline": "#727972",
+                      "on-error": "#ffffff",
+                      "surface-container": "#edefee",
+                      "primary-fixed-dim": "#abcfb8",
+                      "tertiary-fixed-dim": "#bfc9bf",
+                      "inverse-surface": "#2d3130",
+                      "surface-bright": "#f8faf9",
+                      "secondary-fixed": "#d1eac3",
+                      "secondary": "#51634b",
+                      "surface-container-high": "#e7e9e8",
+                      "surface-container-highest": "#e2e3e2",
+                      "primary": "#456553",
+                      "on-primary-container": "#002113",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#eff1f0",
+                      "on-primary-fixed": "#002113",
+                      "on-secondary-fixed-variant": "#384c2f",
+                      "primary-container": "#c7ebd4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "64px",
+                      "md": "24px",
+                      "gutter": "20px",
+                      "margin": "24px",
+                      "xs": "8px",
+                      "base": "4px",
+                      "sm": "16px",
+                      "lg": "40px"
+              },
+              "fontFamily": {
+                      "display-lg": ["bricolageGrotesque"],
+                      "label-md": ["spaceMono"],
+                      "body-lg": ["workSans"],
+                      "headline-lg": ["bricolageGrotesque"],
+                      "headline-lg-mobile": ["bricolageGrotesque"],
+                      "body-md": ["workSans"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "label-md": ["14px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="flex flex-col md:flex-row h-screen overflow-hidden">
+<!-- Collapsible SideNavBar -->
+<aside class="hidden md:flex flex-col h-full w-64 p-md bg-surface-container border-r-2 border-primary-fixed-variant gap-sm z-50" id="sidebar">
+<div class="mb-lg sidebar-header flex flex-col">
+<div class="flex items-center justify-between">
+<h1 class="font-headline-lg text-headline-lg text-on-surface logo-full">Ank</h1>
+<button class="p-1 hover:bg-tertiary-container rounded" id="sidebar-toggle">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="menu_open">menu_open</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface opacity-70 nav-text">Vanguard Rank</p>
+</div>
+<nav class="flex flex-col gap-xs flex-grow">
+<a class="text-on-surface-variant hover:text-on-surface px-sm py-xs flex items-center gap-xs transition-all duration-100 ease-in-out hover:bg-tertiary-container" href="#" title="Report a Problem">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-label-md text-label-md nav-text">Field Notes</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface px-sm py-xs flex items-center gap-xs transition-all duration-100 ease-in-out hover:bg-tertiary-container" href="#" title="Local Impact">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-md text-label-md nav-text">Civic Map</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface px-sm py-xs flex items-center gap-xs transition-all duration-100 ease-in-out hover:bg-tertiary-container" href="#" title="Leaderboard">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="font-label-md text-label-md nav-text">Citizen Rank</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface px-sm py-xs flex items-center gap-xs transition-all duration-100 ease-in-out hover:bg-tertiary-container" href="#" title="Rewards">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-md text-label-md nav-text">Town Hall</span>
+</a>
+<a class="bg-primary-container text-on-primary-container border-2 border-on-primary-fixed-variant translate-x-1 -translate-y-1 active-nav-shadow px-sm py-xs flex items-center gap-xs" href="#" title="Contribution Log">
+<span class="material-symbols-outlined" data-icon="auto_graph">auto_graph</span>
+<span class="font-label-md text-label-md nav-text">Impact Log</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-xs border-t-2 border-primary-fixed-variant pt-md">
+<a class="text-on-surface-variant hover:text-on-surface px-sm py-xs flex items-center gap-xs" href="#" title="Settings">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md nav-text">Settings</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface px-sm py-xs flex items-center gap-xs" href="#" title="Support">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-md nav-text">Support</span>
+</a>
+</div>
+</aside>
+<!-- TopAppBar (Mobile) -->
+<header class="md:hidden flex justify-between items-center px-margin py-xs w-full bg-surface border-b-2 border-primary-fixed-variant">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary tracking-tighter">Ank</h1>
+<div class="flex gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow overflow-y-auto bg-surface hatch-pattern px-margin py-lg pb-xl md:pb-lg">
+<div class="max-w-6xl mx-auto space-y-lg">
+<!-- Profile Header -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-end">
+<div class="md:col-span-8">
+<h2 class="sketch-font text-display-lg text-primary mb-xs">My Contribution</h2>
+<p class="font-body-lg text-on-surface-variant max-w-xl">
+                    Agent ID: #7742-VANGUARD. Your steady ink on the collective ledger. Every report, every fix, every minute spent in the field is etched here.
+                </p>
+</div>
+<div class="md:col-span-4 flex justify-start md:justify-end">
+<div class="brutalist-card p-sm flex items-center gap-sm bg-primary-container">
+<div class="w-16 h-16 border-2 border-on-primary-fixed-variant overflow-hidden">
+<img alt="Gritty charcoal portrait" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYPjD1N_cW77_AKfhpNl_7LWwgNeHopRHqMCz1Q1c62lA06B2C84O70XlyjbDuRsHEKK5ptCT_0LCfJH8jb72HqQwDNKKqTxi3zCaZIOC9rCmJ3t90gH3ossNJVJiwfFLTJ_Z5LYmtxnNVaDxrRy8vCUBxpkN8NSD6lQS9nnyB78j-cM_6NsBEknomSXhcurvCpXiiwJyZyPbwHPlKHyr8yH8wEj51_7QHslHlakmw_-ksI-5c_fSNlgmpw3MEsT2dUL5Pb87qp0c"/>
+</div>
+<div>
+<p class="font-label-md text-on-primary-container/70">Vanguard Rank II</p>
+<p class="sketch-font text-headline-lg-mobile text-on-primary-container">Cassian Moss</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Side-by-Side Responsive Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+<!-- Stats Column -->
+<div class="lg:col-span-4 space-y-gutter">
+<h3 class="sketch-font text-headline-lg text-primary border-b-2 border-dashed border-outline-variant pb-xs">Vitals</h3>
+<div class="brutalist-card p-md bg-surface-container-high">
+<p class="font-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Issues Fixed</p>
+<p class="sketch-font text-display-lg text-primary">24</p>
+<div class="mt-sm flex gap-1 opacity-50">
+<span class="material-symbols-outlined text-sm" data-icon="brush">brush</span>
+<span class="material-symbols-outlined text-sm" data-icon="build">build</span>
+<span class="material-symbols-outlined text-sm" data-icon="cleaning_services">cleaning_services</span>
+</div>
+</div>
+<div class="brutalist-card p-md bg-surface-container-low">
+<div class="flex justify-between items-center mb-md">
+<p class="font-label-md text-on-surface-variant uppercase">Progress to Elder</p>
+<p class="font-label-md text-primary font-bold">82%</p>
+</div>
+<div class="w-full h-6 border-2 border-on-primary-fixed-variant bg-white relative overflow-hidden">
+<div class="h-full bg-primary-container w-[82%] border-r-2 border-on-primary-fixed-variant hatch-pattern"></div>
+</div>
+<p class="font-body-md text-on-surface-variant mt-sm italic text-sm">
+                        "150 more impact points to unlock the Elder's Mantle."
+                    </p>
+</div>
+<div class="brutalist-card p-md bg-tertiary-container">
+<p class="font-label-md text-on-tertiary-container uppercase mb-xs opacity-70">Kudos Earned</p>
+<p class="sketch-font text-display-lg text-on-tertiary-container">1.2k</p>
+<button class="mt-sm w-full py-1 border-2 border-primary-fixed-variant bg-surface text-on-surface font-label-md hover:translate-x-0.5 hover:-translate-y-0.5 transition-transform active:translate-y-0 shadow-[2px_2px_0px_0px_#2d4a3e]">
+                        Redeem
+                    </button>
+</div>
+<!-- Featured Mission Widget -->
+<div class="brutalist-card p-md bg-secondary-container taped-corner mt-lg">
+<h4 class="sketch-font text-headline-lg-mobile text-on-secondary-container mb-xs">Operation: Deep Root</h4>
+<div class="w-full h-3 border-2 border-on-secondary-container bg-white/30 mb-sm">
+<div class="h-full bg-primary-fixed w-[68%]"></div>
+</div>
+<button class="w-full py-1 bg-on-secondary-container text-surface-container-lowest font-bold font-label-md text-xs border-2 border-on-secondary-container">
+                        CONTRIBUTE
+                    </button>
+</div>
+</div>
+<!-- Impact Log Column -->
+<div class="lg:col-span-8 space-y-sm">
+<h3 class="sketch-font text-headline-lg text-primary border-b-2 border-dashed border-outline-variant pb-xs flex items-center gap-xs">
+<span class="material-symbols-outlined" data-icon="auto_graph">auto_graph</span> Personal Impact Log
+                </h3>
+<!-- Log Item 1 -->
+<div class="brutalist-card p-sm bg-surface-container-low flex gap-md items-start">
+<div class="shrink-0 w-12 h-12 border-2 border-on-primary-fixed-variant flex items-center justify-center bg-primary-container">
+<span class="material-symbols-outlined text-primary" data-icon="nature">nature</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md font-bold text-on-surface">Park Bench Restoration</h4>
+<span class="text-[10px] font-label-md text-on-surface-variant">OCT 12</span>
+</div>
+<p class="font-body-md text-on-surface-variant mt-1">Sanded and repainted three benches at Greenwillow Park. Collaborative effort with 2 others.</p>
+<div class="mt-2 flex gap-xs">
+<span class="px-2 py-0.5 border border-outline-variant bg-white text-[10px] font-label-md uppercase">Sanctuary</span>
+<span class="px-2 py-0.5 border border-outline-variant bg-primary-container text-[10px] font-label-md uppercase font-bold text-on-primary-container">+45 pts</span>
+</div>
+</div>
+</div>
+<!-- Log Item 2 -->
+<div class="brutalist-card p-sm bg-surface-container-low flex gap-md items-start">
+<div class="shrink-0 w-12 h-12 border-2 border-on-primary-fixed-variant flex items-center justify-center bg-secondary-container">
+<span class="material-symbols-outlined text-secondary" data-icon="warning">warning</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md font-bold text-on-surface">Streetlight Hazard Report</h4>
+<span class="text-[10px] font-label-md text-on-surface-variant">OCT 09</span>
+</div>
+<p class="font-body-md text-on-surface-variant mt-1">Reported exposed wiring on 4th and Main. Issue acknowledged and fixed by city works within 24hrs.</p>
+<div class="mt-2 flex gap-xs">
+<span class="px-2 py-0.5 border border-outline-variant bg-white text-[10px] font-label-md uppercase">Safety</span>
+<span class="px-2 py-0.5 border border-outline-variant bg-primary-container text-[10px] font-label-md uppercase font-bold text-on-primary-container">+20 pts</span>
+</div>
+</div>
+</div>
+<!-- Log Item 3 -->
+<div class="brutalist-card p-sm bg-surface-container-low flex gap-md items-start">
+<div class="shrink-0 w-12 h-12 border-2 border-on-primary-fixed-variant flex items-center justify-center bg-tertiary-container">
+<span class="material-symbols-outlined text-tertiary" data-icon="groups">groups</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md font-bold text-on-surface">Town Hall Mediation</h4>
+<span class="text-[10px] font-label-md text-on-surface-variant">OCT 05</span>
+</div>
+<p class="font-body-md text-on-surface-variant mt-1">Participated in the quarterly zoning review session. Contributed 3 valid objections.</p>
+<div class="mt-2 flex gap-xs">
+<span class="px-2 py-0.5 border border-outline-variant bg-white text-[10px] font-label-md uppercase">Governance</span>
+<span class="px-2 py-0.5 border border-outline-variant bg-primary-container text-[10px] font-label-md uppercase font-bold text-on-primary-container">+80 pts</span>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="mt-lg w-full flex items-center justify-center gap-sm brutalist-card p-md bg-primary text-on-primary font-bold hover:translate-x-1 hover:-translate-y-1 transition-all active:translate-y-0 shadow-[6px_6px_0px_0px_#2d4a3e]">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-headline-lg-mobile sketch-font">LOG NEW ACTION</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-lg bg-surface-container-lowest border-t-2 border-dashed border-outline-variant flex flex-col items-center gap-md px-margin text-center">
+<div class="flex gap-lg flex-wrap justify-center">
+<a class="font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Community Guidelines</a>
+<a class="font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Data Sovereignty</a>
+<a class="font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Local Chapters</a>
+</div>
+<p class="font-label-md text-on-surface-variant opacity-50 text-xs">© 2024 Ank Civic Action Network</p>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center bg-surface px-xs pb-safe border-t-2 border-primary-fixed-variant z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-md text-[10px]">Digest</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="font-label-md text-[10px]">Action</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container px-4 py-1 border-2 border-primary-fixed-variant" href="#">
+<span class="material-symbols-outlined" data-icon="workspace_premium">workspace_premium</span>
+<span class="font-label-md text-[10px]">Impact</span>
+</a>
+</nav>
+<script>
+    // Collapsible Sidebar Logic
+    const sidebar = document.getElementById('sidebar');
+    const toggle = document.getElementById('sidebar-toggle');
+    const toggleIcon = toggle.querySelector('span');
+
+    toggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        if (sidebar.classList.contains('collapsed')) {
+            toggleIcon.textContent = 'menu';
+        } else {
+            toggleIcon.textContent = 'menu_open';
+        }
+    });
+
+    // Hover interactions for brutalist elements
+    document.querySelectorAll('.brutalist-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translate(-2px, -2px)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translate(0, 0)';
+        });
+    });
+</script>
+</body></html>

@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Anēk | Ek Se Anēk - Community Civic Network</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Manrope:wght@200..800&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <style>
+        /* Sidebar Minimized State */
+        .sidebar-minimized {
+            width: 80px !important;
+        }
+
+        .sidebar-minimized .hide-on-minimize {
+            display: none !important;
+        }
+
+        .sidebar-minimized #vine-container {
+            padding-left: 0 !important;
+            align-items: center;
+        }
+
+        .sidebar-minimized #vine-svg {
+            display: none !important;
+        }
+
+        .sidebar-minimized .nav-btn {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .sidebar-minimized .nav-btn>div:last-child {
+            display: none !important;
+        }
+
+        .sidebar-minimized #sidebar-toggle-btn {
+            right: 50% !important;
+            transform: translateX(50%);
+        }
+
+        .sidebar-minimized .nav-btn:hover {
+            background-color: transparent !important;
+            border-color: transparent !important;
+        }
+
+        /* Navigation Hover Effect */
+        .nav-link {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 2px;
+        }
+
+        /* Paper-like rough border effect */
+        .paper-border {
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: currentColor;
+            transform-origin: bottom left;
+            transition: transform 0.25s ease-out;
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background text-on-surface selection:bg-primary selection:text-on-primary min-h-screen flex flex-col transition-colors duration-500 relative">
+
+    <img id="global-bg-image" src="/images/tree.png" alt="Anēk Background"
+        class="fixed inset-0 w-full h-full object-cover object-center z-[-1] opacity-70" />
+
+    <header id="top-header"
+        class="fixed top-0 z-50 w-full h-[60px] flex justify-between items-center px-margin py-xs transition-transform duration-300 translate-y-0 bg-white/10 backdrop-blur-sm border-b border-white/20">
+        <div class="flex items-center gap-xs">
+
+            <button id="sidebar-toggle-btn" onclick="toggleSidebar()"
+                class="md:hidden text-gray-900 hover:text-black transition-all mr-2">
+                <span class="material-symbols-outlined text-3xl">menu</span>
+            </button>
+            <h1 class="font-cabin text-4xl font-bold text-gray-900 tracking-tighter">Anēk</h1>
+            <span
+                class="font-mono text-[10px] bg-green-900/40 text-gray-900 border border-gray-900 px-2 py-0.5 ml-2 font-bold tracking-widest rounded-none backdrop-blur-sm hidden sm:inline-block">Be
+                a Part of Anēk</span>
+        </div>
+        <nav class="hidden md:flex gap-md items-center">
+            <a class="font-mono text-xs font-bold text-gray-900 nav-link" href="#">Home</a>
+            <button onclick="openLoginModal()"
+                class="font-mono text-xs font-bold text-gray-700 hover:text-gray-900 nav-link">Local Map</button>
+            <button onclick="openLoginModal()"
+                class="font-mono text-xs font-bold text-gray-700 hover:text-gray-900 nav-link">Report Issue</button>
+            <button onclick="openLoginModal()"
+                class="font-mono text-xs font-bold text-gray-700 hover:text-gray-900 nav-link">My Contributions</button>
+            <button onclick="openLoginModal()"
+                class="font-mono text-xs font-bold text-gray-700 hover:text-gray-900 nav-link">Top Citizens</button>
+            <button onclick="openLoginModal()"
+                class="font-mono text-xs font-bold text-gray-700 hover:text-gray-900 nav-link">Community</button>
+        </nav>
+        <div class="flex items-center gap-sm">
+            <button onclick="openLoginModal()"
+                class="font-mono text-xs border-2 border-primary px-4 py-1.5 bg-white shadow-[2px_2px_0px_0px_#2d4a3e] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#2d4a3e] transition-all font-bold">
+                ENTER DASHBOARD
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-[60px] flex flex-col relative w-full">
+
+        <div id="sidebar-overlay" onclick="toggleSidebar()"
+            class="fixed inset-0 z-[50] hidden md:hidden bg-black/20 backdrop-blur-sm transition-opacity duration-300">
+        </div>
+
+        <aside id="left-sidebar"
+            class="-translate-x-full sidebar-minimized fixed left-0 w-[75vw] md:w-[320px] top-0 h-[100vh] px-4 pb-4 pt-2 flex flex-col justify-between z-[60] transition-transform duration-300 overflow-x-hidden glass-card border-r-2 border-gray-900/20">
+            <div id="sidebar-content" class="space-y-sm transition-opacity duration-300 w-full pt-4">
+
+                <button onclick="toggleSidebar()"
+                    class="nav-btn flex items-center gap-sm py-1 px-2 hover:bg-white/40 w-full group text-left rounded-none border border-transparent hover:border-gray-900 transition-all shrink-0 relative z-10 mb-4">
+                    <div
+                        class="w-12 h-12 rounded-full border-1 border-transparent group-hover:bg-white/40 group-hover:border-gray-900 flex items-center justify-center text-gray-900 transition-all shrink-0">
+                        <span class="material-symbols-outlined text-3xl">menu</span>
+                    </div>
+                    <div class="ml-2">
+                        <p class="font-mono text-xs font-bold text-gray-900">Close Menu</p>
+                    </div>
+                </button>
+
+                <div id="vine-container"
+                    class="relative py-2 flex flex-col gap-3 pl-0 md:pl-14 select-none transition-all duration-300">
+
+                    <svg id="vine-svg"
+                        class="absolute left-2 top-0 bottom-0 w-12 h-full pointer-events-none hidden md:block"
+                        viewBox="0 0 48 350" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                        <path d="M 20 0 C 22 80, 18 170, 20 250 C 22 290, 18 320, 20 350" stroke="#4a3728"
+                            stroke-width="5" stroke-linecap="round" />
+                        <path d="M 20 0 C 22 80, 18 170, 20 250 C 22 290, 18 320, 20 350" stroke="#4f772d"
+                            stroke-width="2" stroke-linecap="round" />
+
+                        <path d="M 20 18 C 32 18, 45 22, 45 28 C 45 34, 32 38, 20 34" stroke="#4f772d"
+                            stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M 38 22 C 40 16, 46 18, 38 22 Z" fill="#90a955" stroke="#4f772d" stroke-width="1" />
+
+                        <path d="M 20 86 C 32 86, 45 90, 45 96 C 45 102, 32 106, 20 102" stroke="#4f772d"
+                            stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M 38 86 C 40 80, 46 82, 38 86 Z" fill="#90a955" stroke="#4f772d" stroke-width="1" />
+
+                        <path d="M 20 154 C 32 154, 45 158, 45 164 C 45 170, 32 174, 20 170" stroke="#4f772d"
+                            stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M 38 150 C 40 144, 46 146, 38 150 Z" fill="#90a955" stroke="#4f772d"
+                            stroke-width="1" />
+
+                        <path d="M 20 222 C 32 222, 45 226, 45 232 C 45 238, 32 242, 20 238" stroke="#4f772d"
+                            stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M 38 214 C 40 208, 46 210, 38 214 Z" fill="#90a955" stroke="#4f772d"
+                            stroke-width="1" />
+
+                        <path d="M 20 290 C 32 290, 45 294, 45 300 C 45 306, 32 310, 20 306" stroke="#4f772d"
+                            stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M 38 278 C 40 272, 46 274, 38 278 Z" fill="#90a955" stroke="#4f772d"
+                            stroke-width="1" />
+                    </svg>
+
+                    <button onclick="openLoginModal()"
+                        class="nav-btn flex items-center gap-sm py-1 px-2 hover:bg-white/40 w-full group text-left rounded-none border border-transparent hover:border-gray-900 transition-all shrink-0 relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-full border-2 border-gray-900 bg-white/40 backdrop-blur-md flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(17,24,39,0.8)] group-hover:bg-white group-hover:border-gray-900 text-gray-900 transition-all shrink-0">
+                            <span class="material-symbols-outlined">map</span>
+                        </div>
+                        <div class="ml-2">
+                            <p class="font-mono text-xs font-bold text-gray-900 group-hover:underline">Local Map</p>
+                            <p class="font-sans text-[10px] text-gray-800 font-bold">Browse local issues</p>
+                        </div>
+                    </button>
+
+                    <button onclick="openLoginModal()"
+                        class="nav-btn flex items-center gap-sm py-1 px-2 hover:bg-white/40 w-full group text-left rounded-none border border-transparent hover:border-gray-900 transition-all shrink-0 relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-full border-2 border-gray-900 bg-white/40 backdrop-blur-md flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(17,24,39,0.8)] group-hover:bg-white group-hover:border-gray-900 text-gray-900 transition-all shrink-0">
+                            <span class="material-symbols-outlined">edit_note</span>
+                        </div>
+                        <div class="ml-2">
+                            <p class="font-mono text-xs font-bold text-gray-900 group-hover:underline">Report Issue</p>
+                            <p class="font-sans text-[10px] text-gray-800 font-bold">Report a problem</p>
+                        </div>
+                    </button>
+
+                    <button onclick="openLoginModal()"
+                        class="nav-btn flex items-center gap-sm py-1 px-2 hover:bg-white/40 w-full group text-left rounded-none border border-transparent hover:border-gray-900 transition-all shrink-0 relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-full border-2 border-gray-900 bg-white/40 backdrop-blur-md flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(17,24,39,0.8)] group-hover:bg-white group-hover:border-gray-900 text-gray-900 transition-all shrink-0">
+                            <span class="material-symbols-outlined">history_edu</span>
+                        </div>
+                        <div class="ml-2">
+                            <p class="font-mono text-xs font-bold text-gray-900 group-hover:underline">My Contributions
+                            </p>
+                            <p class="font-sans text-[10px] text-gray-800 font-bold">Track contributions</p>
+                        </div>
+                    </button>
+
+                    <button onclick="openLoginModal()"
+                        class="nav-btn flex items-center gap-sm py-1 px-2 hover:bg-white/40 w-full group text-left rounded-none border border-transparent hover:border-gray-900 transition-all shrink-0 relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-full border-2 border-gray-900 bg-white/40 backdrop-blur-md flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(17,24,39,0.8)] group-hover:bg-white group-hover:border-gray-900 text-gray-900 transition-all shrink-0">
+                            <span class="material-symbols-outlined">leaderboard</span>
+                        </div>
+                        <div class="ml-2">
+                            <p class="font-mono text-xs font-bold text-gray-900 group-hover:underline">Top Citizens</p>
+                            <p class="font-sans text-[10px] text-gray-800 font-bold">Citizen standings</p>
+                        </div>
+                    </button>
+
+                    <button onclick="openLoginModal()"
+                        class="nav-btn flex items-center gap-sm py-1 px-2 hover:bg-white/40 w-full group text-left rounded-none border border-transparent hover:border-gray-900 transition-all shrink-0 relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-full border-2 border-gray-900 bg-white/40 backdrop-blur-md flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(17,24,39,0.8)] group-hover:bg-white group-hover:border-gray-900 text-gray-900 transition-all shrink-0">
+                            <span class="material-symbols-outlined">workspace_premium</span>
+                        </div>
+                        <div class="ml-2">
+                            <p class="font-mono text-xs font-bold text-gray-900 group-hover:underline">Rewards</p>
+                            <p class="font-sans text-[10px] text-gray-800 font-bold">Redeem citizen points</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <div id="sidebar-footer"
+                class="hide-on-minimize border-t border-gray-900/20 pt-sm transition-opacity duration-300 w-full">
+                <p class="font-mono text-[9px] text-gray-800 font-bold">Rooted in Solidarity • © 2026</p>
+            </div>
+        </aside>
+
+        <div class="flex-grow flex flex-col min-w-0">
+
+            <section class="flex flex-col items-center pt-8 pb-28 px-4 md:px-8 relative overflow-hidden"
+                id="hero-section">
+
+                <div class="flex flex-col gap-6 w-full md:w-[95%] xl:max-w-screen-2xl z-10">
+
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-4 w-full">
+
+                        <div
+                            class="w-full md:max-w-3xl bg-white/95 backdrop-blur-sm border-2 border-primary paper-border p-6 md:p-8 flex flex-col justify-center shadow-[4px_4px_0px_0px_rgba(45,74,62,0.5)]">
+                            <h2 class="font-cabin text-5xl md:text-6xl text-primary tracking-tight leading-none mb-2">
+                                Join the Anēk Community
+                            </h2>
+                            <p class="font-mono text-sm text-secondary font-bold mb-6 tracking-widest uppercase">
+                                Ek Se Anēk • Small Actions. Massive Impact.
+                            </p>
+                            <p class="font-sans text-base md:text-lg text-on-surface-variant mb-8 max-w-lg">
+                                India's community-driven, reward-based platform for civic action. Report local issues,
+                                collaborate with your community, earn rewards, and create cleaner, safer
+                                neighborhoods—one small action at a time.
+                            </p>
+
+                        </div>
+
+                        <div
+                            class="w-full md:max-w-[320px] border-2 border-primary/40 paper-border p-6 flex flex-col justify-between bg-white/40 backdrop-blur-md">
+                            <div>
+                                <div
+                                    class="w-10 h-10 border-2 border-primary rounded-full flex items-center justify-center mb-4 bg-surface-container">
+                                    <span class="material-symbols-outlined text-primary">map</span>
+                                </div>
+                                <h3 class="font-cabin text-3xl text-primary mb-2">Civic Workflow</h3>
+                                <ul class="font-sans text-sm text-gray-800 space-y-2 mb-4">
+                                    <li class="flex items-center gap-2"><span
+                                            class="material-symbols-outlined text-[16px]">edit_note</span> Report
+                                        Problems</li>
+                                    <li class="flex items-center gap-2"><span
+                                            class="material-symbols-outlined text-[16px]">visibility</span> View Nearby
+                                        Issues</li>
+                                    <li class="flex items-center gap-2"><span
+                                            class="material-symbols-outlined text-[16px]">history_edu</span> Track
+                                        Lifecycle</li>
+                                </ul>
+                            </div>
+                            <div class="font-mono text-[10px] text-secondary font-bold uppercase">
+                                Roads • Garbage • Plastic • Water
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-4 w-full">
+
+                        <div
+                            class="w-full md:max-w-lg md:ml-4 bg-primary text-white border-2 border-gray-900 paper-border p-6 flex flex-col justify-between shadow-[4px_4px_0px_0px_rgba(17,24,39,0.8)]">
+                            <div>
+                                <div
+                                    class="w-10 h-10 border-2 border-white rounded-full flex items-center justify-center mb-4 bg-primary-light/20">
+                                    <span class="material-symbols-outlined text-white">workspace_premium</span>
+                                </div>
+                                <h3 class="font-cabin text-3xl text-white mb-2">Reward Ecosystem</h3>
+                                <p class="font-sans text-sm text-gray-200 mb-4">
+                                    Earn Good Citizen Points for every verified contribution. Rise through the ranks on
+                                    the leaderboard.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="font-mono text-[9px] border border-white/40 px-2 py-1 bg-black/20">Cashback</span>
+                                <span
+                                    class="font-mono text-[9px] border border-white/40 px-2 py-1 bg-black/20">Merchandise</span>
+                                <span
+                                    class="font-mono text-[9px] border border-white/40 px-2 py-1 bg-black/20">Badges</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="w-full md:max-w-2xl border-2 border-dashed border-primary/60 paper-border p-6 bg-surface-container-low/80 backdrop-blur-sm flex items-center justify-center text-center self-start">
+                            <p class="font-playfair italic text-lg md:text-xl text-gray-800">
+                                "Every small action plants a seed. One person starts the change. That one person
+                                inspires many. Ek → Anēk."
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <div class="w-full md:pl-[80px]">
+
+                <section
+                    class="glass-card border-t-4 border-primary py-16 px-4 md:px-8 w-full relative z-10 bg-white/60">
+                    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h3 class="font-cabin text-4xl text-primary mb-4">Our Mission & Vision</h3>
+                            <p class="font-mono text-sm text-secondary font-bold uppercase tracking-wider mb-6">Why We
+                                Started This Project</p>
+                            <p class="font-sans text-base md:text-lg text-gray-800 mb-4">
+                                <strong>Anēk (अनेक)</strong> means 'many'. Basically, one person ('Ek') doing something
+                                cool inspires a bunch of other people ('Anēk').
+                            </p>
+                            <p class="font-sans text-base md:text-lg text-gray-800 mb-4">
+                                We're tired of waiting on others. We built this so you can take charge of your street,
+                                report what's broken, fix it with your neighbors, and actually get rewarded for it.
+                            </p>
+                        </div>
+                        <div
+                            class="bg-primary-light/10 border-2 border-primary paper-border p-8 text-center shadow-[4px_4px_0px_0px_rgba(45,74,62,0.5)]">
+                            <span class="material-symbols-outlined text-6xl text-primary mb-4">eco</span>
+                            <h4 class="font-cabin text-2xl text-primary mb-2">Ek → Anēk</h4>
+                            <p class="font-playfair italic text-lg text-gray-700">"One person starts the change. That
+                                one person inspires many. Many people create lasting impact. Better Society."</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section
+                    class="glass-card border-t-4 border-primary py-16 px-4 md:px-8 w-full relative z-10 bg-surface-container-lowest">
+                    <div class="max-w-7xl mx-auto">
+                        <h3 class="font-cabin text-4xl text-primary mb-8 text-center">How it works</h3>
+                        <p class="font-sans text-on-surface-variant text-center max-w-2xl mx-auto mb-12">See how a
+                            single action creates a wave of change, from reporting a problem to earning your reward.</p>
+
+                        <div class="flex flex-col md:flex-row items-center justify-between w-full relative">
+
+                            <div
+                                class="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-primary/20 -z-10 -translate-y-1/2">
+                            </div>
+
+                            <div
+                                class="flex flex-col items-center bg-white p-4 rounded-full border-2 border-primary mb-4 md:mb-0 paper-border shadow-[2px_2px_0px_0px_rgba(45,74,62,1)]">
+                                <span class="material-symbols-outlined text-primary mb-2">edit_note</span>
+                                <span class="font-mono text-[10px] font-bold uppercase text-primary">1. Reported</span>
+                            </div>
+
+                            <span
+                                class="material-symbols-outlined text-primary/40 rotate-90 md:rotate-0 mb-4 md:mb-0">arrow_forward</span>
+
+                            <div
+                                class="flex flex-col items-center bg-white p-4 rounded-full border-2 border-primary mb-4 md:mb-0 paper-border shadow-[2px_2px_0px_0px_rgba(45,74,62,1)]">
+                                <span class="material-symbols-outlined text-primary mb-2">thumb_up</span>
+                                <span class="font-mono text-[10px] font-bold uppercase text-primary">2. Accepted</span>
+                            </div>
+
+                            <span
+                                class="material-symbols-outlined text-primary/40 rotate-90 md:rotate-0 mb-4 md:mb-0">arrow_forward</span>
+
+                            <div
+                                class="flex flex-col items-center bg-white p-4 rounded-full border-2 border-primary mb-4 md:mb-0 paper-border shadow-[2px_2px_0px_0px_rgba(45,74,62,1)]">
+                                <span class="material-symbols-outlined text-primary mb-2">engineering</span>
+                                <span class="font-mono text-[10px] font-bold uppercase text-primary">3. In
+                                    Progress</span>
+                            </div>
+
+                            <span
+                                class="material-symbols-outlined text-primary/40 rotate-90 md:rotate-0 mb-4 md:mb-0">arrow_forward</span>
+
+                            <div
+                                class="flex flex-col items-center bg-white p-4 rounded-full border-2 border-primary mb-4 md:mb-0 paper-border shadow-[2px_2px_0px_0px_rgba(45,74,62,1)]">
+                                <span class="material-symbols-outlined text-primary mb-2">task_alt</span>
+                                <span class="font-mono text-[10px] font-bold uppercase text-primary">4. Completed</span>
+                            </div>
+
+                            <span
+                                class="material-symbols-outlined text-primary/40 rotate-90 md:rotate-0 mb-4 md:mb-0">arrow_forward</span>
+
+                            <div
+                                class="flex flex-col items-center bg-white p-4 rounded-full border-2 border-primary mb-4 md:mb-0 paper-border shadow-[2px_2px_0px_0px_rgba(45,74,62,1)]">
+                                <span class="material-symbols-outlined text-primary mb-2">verified</span>
+                                <span class="font-mono text-[10px] font-bold uppercase text-primary">5. Verified</span>
+                            </div>
+
+                            <span
+                                class="material-symbols-outlined text-primary/40 rotate-90 md:rotate-0 mb-4 md:mb-0">arrow_forward</span>
+
+                            <div
+                                class="flex flex-col items-center bg-primary text-white p-4 rounded-full border-2 border-gray-900 mb-4 md:mb-0 paper-border shadow-[2px_2px_0px_0px_rgba(17,24,39,1)]">
+                                <span class="material-symbols-outlined text-white mb-2">redeem</span>
+                                <span class="font-mono text-[10px] font-bold uppercase text-white">6. Reward</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section
+                    class="glass-card border-t-4 border-primary py-16 px-4 md:px-8 w-full relative z-10 bg-surface-container-low">
+                    <div class="max-w-7xl mx-auto">
+                        <h3 class="font-cabin text-4xl text-primary mb-2 text-center">What Problems We Solve</h3>
+                        <p class="font-sans text-on-surface-variant text-center max-w-2xl mx-auto mb-12">Anēk targets
+                            everyday civic and community issues that often go unnoticed or unresolved.</p>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div
+                                class="bg-white/80 border-2 border-primary/20 paper-border p-4 flex flex-col items-center text-center">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-2">delete</span>
+                                <span class="font-sans font-bold text-sm text-gray-800">Overflowing Garbage</span>
+                            </div>
+                            <div
+                                class="bg-white/80 border-2 border-primary/20 paper-border p-4 flex flex-col items-center text-center">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-2">add_road</span>
+                                <span class="font-sans font-bold text-sm text-gray-800">Broken Roads</span>
+                            </div>
+                            <div
+                                class="bg-white/80 border-2 border-primary/20 paper-border p-4 flex flex-col items-center text-center">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-2">water_damage</span>
+                                <span class="font-sans font-bold text-sm text-gray-800">Water Logging</span>
+                            </div>
+                            <div
+                                class="bg-white/80 border-2 border-primary/20 paper-border p-4 flex flex-col items-center text-center">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-2">recycling</span>
+                                <span class="font-sans font-bold text-sm text-gray-800">Plastic Waste</span>
+                            </div>
+                            <div
+                                class="bg-white/80 border-2 border-primary/20 paper-border p-4 flex flex-col items-center text-center">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-2">format_paint</span>
+                                <span class="font-sans font-bold text-sm text-gray-800">Unpainted Walls</span>
+                            </div>
+                            <div
+                                class="bg-white/80 border-2 border-primary/20 paper-border p-4 flex flex-col items-center text-center">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-2">pets</span>
+                                <span class="font-sans font-bold text-sm text-gray-800">Animal Welfare</span>
+                            </div>
+                            <div
+                                class="bg-white/80 border-2 border-primary/20 paper-border p-4 flex flex-col items-center text-center">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-2">nature</span>
+                                <span class="font-sans font-bold text-sm text-gray-800">Neglected Areas</span>
+                            </div>
+                            <div
+                                class="bg-white/80 border-2 border-primary/20 paper-border p-4 flex flex-col items-center text-center">
+                                <span
+                                    class="material-symbols-outlined text-primary text-3xl mb-2">cleaning_services</span>
+                                <span class="font-sans font-bold text-sm text-gray-800">Cleanliness &
+                                    Beautification</span>
+                            </div>
+
+                            <div
+                                class="bg-primary/10 border-2 border-primary border-dashed paper-border p-4 flex flex-col items-center justify-center text-center col-span-2 md:col-span-1">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-2">add_circle</span>
+                                <span class="font-sans font-bold text-sm text-primary">+ Many More</span>
+                                <span class="font-sans text-[10px] text-gray-600 mt-1">Any issue that impacts your
+                                    community</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section
+                    class="glass-card border-t-4 border-primary py-16 px-4 md:px-8 w-full relative z-10 bg-primary/5">
+                    <div class="max-w-7xl mx-auto">
+                        <h3 class="font-cabin text-4xl text-primary mb-2 text-center">The Power of Anēk</h3>
+                        <p class="font-sans text-on-surface-variant text-center max-w-2xl mx-auto mb-12">Driven by
+                            real-time data, community verification, and absolute transparency.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div
+                                class="bg-white/90 border-2 border-primary paper-border p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_0px_rgba(45,74,62,0.3)]">
+                                <span class="material-symbols-outlined text-secondary text-5xl mb-4">public</span>
+                                <h4 class="font-cabin text-3xl text-primary font-bold mb-2">100%</h4>
+                                <span class="font-sans font-bold text-sm text-gray-800">Citizen-Led Verified Data</span>
+                                <p class="text-xs text-gray-600 mt-2">Every issue is verified by local community members
+                                    to prevent false reports.</p>
+                            </div>
+                            <div
+                                class="bg-white/90 border-2 border-primary paper-border p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_0px_rgba(45,74,62,0.3)]">
+                                <span class="material-symbols-outlined text-secondary text-5xl mb-4">bolt</span>
+                                <h4 class="font-cabin text-3xl text-primary font-bold mb-2">24/7</h4>
+                                <span class="font-sans font-bold text-sm text-gray-800">Real-Time Tracking</span>
+                                <p class="text-xs text-gray-600 mt-2">Live updates from 'Reported' to 'Resolved' visible
+                                    to everyone in the area.</p>
+                            </div>
+                            <div
+                                class="bg-white/90 border-2 border-primary paper-border p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_0px_rgba(45,74,62,0.3)]">
+                                <span class="material-symbols-outlined text-secondary text-5xl mb-4">group_add</span>
+                                <h4 class="font-cabin text-3xl text-primary font-bold mb-2">Geo-Targeted</h4>
+                                <span class="font-sans font-bold text-sm text-gray-800">Hyperlocal Clusters</span>
+                                <p class="text-xs text-gray-600 mt-2">AI automatically groups identical issues reported
+                                    by multiple users to prioritize fixes.</p>
+                            </div>
+                            <div
+                                class="bg-white/90 border-2 border-primary paper-border p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_0px_rgba(45,74,62,0.3)]">
+                                <span
+                                    class="material-symbols-outlined text-secondary text-5xl mb-4">workspace_premium</span>
+                                <h4 class="font-cabin text-3xl text-primary font-bold mb-2">Gamified</h4>
+                                <span class="font-sans font-bold text-sm text-gray-800">Impact Ecosystem</span>
+                                <p class="text-xs text-gray-600 mt-2">A sustainable reward loop that keeps the community
+                                    continuously engaged.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section
+                    class="glass-card border-t-4 border-primary py-16 px-4 md:px-8 w-full relative z-10 bg-white/40">
+                    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                        <div
+                            class="bg-white/95 border-2 border-primary paper-border p-6 shadow-[4px_4px_0px_0px_rgba(45,74,62,0.5)]">
+                            <h3 class="font-cabin text-2xl text-primary mb-4 flex items-center gap-2"><span
+                                    class="material-symbols-outlined">star</span> Core Features</h3>
+                            <ul class="space-y-3 font-sans text-sm text-gray-800">
+                                <li class="flex items-start gap-2"><span
+                                        class="material-symbols-outlined text-primary text-lg">add_a_photo</span> Report
+                                    with photo, video & GPS.</li>
+                                <li class="flex items-start gap-2"><span
+                                        class="material-symbols-outlined text-primary text-lg">filter_list</span> Filter
+                                    by Roads, Garbage, Plastic, Trees, etc.</li>
+                                <li class="flex items-start gap-2"><span
+                                        class="material-symbols-outlined text-primary text-lg">warning</span>
+                                    Priority/Emergency issue section.</li>
+                                <li class="flex items-start gap-2"><span
+                                        class="material-symbols-outlined text-primary text-lg">forum</span> Community
+                                    feed and updates.</li>
+                                <li class="flex items-start gap-2"><span
+                                        class="material-symbols-outlined text-primary text-lg">bar_chart</span>
+                                    Dashboard with total contributions.</li>
+                            </ul>
+                        </div>
+
+                        <div
+                            class="bg-primary text-white border-2 border-gray-900 paper-border p-6 shadow-[4px_4px_0px_0px_rgba(17,24,39,0.8)]">
+                            <h3 class="font-cabin text-2xl text-white mb-4 flex items-center gap-2"><span
+                                    class="material-symbols-outlined">redeem</span> Reward Ecosystem</h3>
+                            <p class="font-sans text-sm text-gray-200 mb-4">
+                                We believe good deeds should be recognized. Earn Good Citizen Points, badges, ranks and
+                                climb the leaderboard!
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="font-mono text-xs border border-white/40 px-2 py-1 bg-black/20">Cashback</span>
+                                <span
+                                    class="font-mono text-xs border border-white/40 px-2 py-1 bg-black/20">Vouchers</span>
+                                <span
+                                    class="font-mono text-xs border border-white/40 px-2 py-1 bg-black/20">Discounts</span>
+                                <span class="font-mono text-xs border border-white/40 px-2 py-1 bg-black/20">Event
+                                    Passes</span>
+                                <span class="font-mono text-xs border border-white/40 px-2 py-1 bg-black/20">Free
+                                    Samples</span>
+                                <span
+                                    class="font-mono text-xs border border-white/40 px-2 py-1 bg-black/20">Merchandise</span>
+                                <span
+                                    class="font-mono text-xs border border-white/40 px-2 py-1 bg-black/20">Workshops</span>
+                                <span class="font-mono text-xs border border-white/40 px-2 py-1 bg-black/20">NGO
+                                    Recognition</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-white/95 border-2 border-primary paper-border p-6 shadow-[4px_4px_0px_0px_rgba(45,74,62,0.5)]">
+                            <h3 class="font-cabin text-2xl text-primary mb-4 flex items-center gap-2"><span
+                                    class="material-symbols-outlined">rocket_launch</span> Future Roadmap</h3>
+                            <ul class="space-y-3 font-sans text-sm text-gray-800">
+                                <li class="flex items-start gap-2"><span
+                                        class="material-symbols-outlined text-secondary text-lg">event</span> Seasonal
+                                    challenges & local campaigns.</li>
+                                <li class="flex items-start gap-2"><span
+                                        class="material-symbols-outlined text-secondary text-lg">groups</span> Team
+                                    clean-up drives.</li>
+                                <li class="flex items-start gap-2"><span
+                                        class="material-symbols-outlined text-secondary text-lg">handshake</span> NGO
+                                    collaborations & gov integration.</li>
+                                <li class="flex items-start gap-2"><span
+                                        class="material-symbols-outlined text-secondary text-lg">smart_toy</span>
+                                    AI-assisted issue categorization.</li>
+                                <li class="flex items-start gap-2"><span
+                                        class="material-symbols-outlined text-secondary text-lg">insights</span>
+                                    Advanced analytics dashboard.</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="glass-card border-t-4 border-primary py-xl w-full relative z-10">
+                    <div class="w-full">
+                        <div
+                            class="flex flex-col md:flex-row md:items-end justify-between mb-lg border-b-2 border-primary pb-xs px-4 md:px-8">
+                            <div>
+                                <h3 class="font-cabin text-4xl text-primary">Recent Reports</h3>
+                                <p class="font-mono text-[10px] text-secondary font-bold uppercase tracking-wider">
+                                    Community Feed</p>
+                            </div>
+                            <p class="font-sans text-xs text-on-surface-variant italic mt-2 md:mt-0">
+                                Log in to take action or report new problems.
+                            </p>
+                        </div>
+
+                        <div id="local-pulse-feed"
+                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 w-full border-t-2 border-primary">
+
+                        </div>
+                    </div>
+                </section>
+
+                <section
+                    class="glass-card px-margin py-xl flex flex-col items-center text-center w-full border-t-2 border-dashed border-primary">
+                    <div class="max-w-2xl space-y-md">
+                        <h3 class="font-cabin text-4xl text-primary">Make a Difference</h3>
+                        <p class="font-sans text-sm text-on-surface-variant max-w-md mx-auto">
+                            One person starts the change. That one person inspires many. Many people create lasting
+                            impact.
+                        </p>
+                        <button onclick="openLoginModal()"
+                            class="group relative px-8 py-3 bg-primary text-on-primary font-mono font-bold text-xs uppercase tracking-widest border-2 border-primary">
+                            <span class="relative z-10">Join as Ek</span>
+                            <div
+                                class="absolute inset-0 bg-secondary-container translate-x-1 translate-y-1 -z-10 group-hover:translate-x-0 group-hover:translate-y-0 transition-all">
+                            </div>
+                        </button>
+                    </div>
+                </section>
+
+                <section
+                    class="glass-card border-t-4 border-primary py-16 px-4 md:px-8 w-full relative z-10 bg-surface-container-lowest">
+                    <div class="max-w-7xl mx-auto">
+                        <h3 class="font-cabin text-4xl text-primary mb-2 text-center">Meet the Creators</h3>
+                        <p class="font-sans text-on-surface-variant text-center max-w-2xl mx-auto mb-12">Built by a trio
+                            of founders passionate about civic change.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                            <div
+                                class="bg-white/95 border-2 border-primary paper-border p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_0px_rgba(45,74,62,0.5)] group">
+                                <div
+                                    class="w-24 h-24 rounded-full border-4 border-primary/20 bg-primary/10 flex items-center justify-center mb-4 group-hover:border-primary transition-colors overflow-hidden">
+                                    <img src="/pfp/stark.png" alt="Stark" class="w-full h-full object-cover" />
+                                </div>
+                                <h4 class="font-cabin text-2xl text-gray-900 mb-1">Stark</h4>
+                                <p class="font-mono text-[10px] font-bold text-primary uppercase tracking-widest mb-3">
+                                    Founder & Lead Developer</p>
+                                <p class="font-sans text-sm text-gray-600">Architects the platform and drives the core
+                                    technical development of the website.</p>
+                            </div><div
+                                class="bg-white/95 border-2 border-primary paper-border p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_0px_rgba(45,74,62,0.5)] group">
+                                <div
+                                    class="w-24 h-24 rounded-full border-4 border-primary/20 bg-primary/10 flex items-center justify-center mb-4 group-hover:border-primary transition-colors overflow-hidden">
+                                    <img src="/pfp/hero.png" alt="Hero" class="w-full h-full object-cover" />
+                                </div>
+                                <h4 class="font-cabin text-2xl text-gray-900 mb-1">Hero</h4>
+                                <p class="font-mono text-[10px] font-bold text-primary uppercase tracking-widest mb-3">
+                                    Founder & Co-Developer</p>
+                                <p class="font-sans text-sm text-gray-600">Builds and implements the features that make
+                                    Anēk a seamless experience.</p>
+                            </div>
+
+                            <div
+                                class="bg-white/95 border-2 border-primary paper-border p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_0px_rgba(45,74,62,0.5)] group">
+                                <div
+                                    class="w-24 h-24 rounded-full border-4 border-primary/20 bg-primary/10 flex items-center justify-center mb-4 group-hover:border-primary transition-colors overflow-hidden">
+                                    <img src="/pfp/moichi.png" alt="Moichi" class="w-full h-full object-cover" />
+                                </div>
+                                <h4 class="font-cabin text-2xl text-gray-900 mb-1">Mochi</h4>
+                                <p class="font-mono text-[10px] font-bold text-primary uppercase tracking-widest mb-3">
+                                    Founder & Marketing Manager</p>
+                                <p class="font-sans text-sm text-gray-600">Leads social media, presentations, and
+                                    community outreach strategies.</p>
+                            </div>
+
+                            
+
+                        </div>
+                    </div>
+                </section>
+
+                <footer
+                    class="w-full py-lg glass-card border-t-2 border-dashed border-primary/20 flex flex-col items-center gap-xs px-margin text-center">
+                    <p class="font-mono text-xs text-primary font-bold">Anēk</p>
+                    <p class="font-mono text-[10px] text-on-surface-variant">© 2026 Anēk • Building the forest, leaf by
+                        leaf.</p>
+                </footer>
+
+            </div>
+        </div>
+    </main>
+
+    <div id="login-modal"
+        class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-forest-deep/60 backdrop-blur-sm px-margin">
+        <div class="bg-white border-4 border-primary p-8 brutalist-shadow max-w-md w-full relative space-y-md">
+
+            <button onclick="closeLoginModal()"
+                class="absolute top-4 right-4 w-8 h-8 border-2 border-primary flex items-center justify-center hover:bg-red-100 transition-colors">
+                <span class="material-symbols-outlined text-sm font-bold">close</span>
+            </button>
+
+            <div class="text-center">
+                <h3 class="font-cabin text-3xl text-primary">Register / Login</h3>
+                <p class="font-mono text-[10px] text-secondary uppercase font-bold tracking-widest">Connect to Anēk</p>
+            </div>
+
+            <form id="login-form" class="space-y-sm" onsubmit="handleLoginSubmit(event)">
+                <div class="space-y-1">
+                    <label for="input-name" class="font-mono text-xs text-primary font-bold block">FULL NAME</label>
+                    <input id="input-name" required
+                        class="w-full bg-surface-container border-2 border-primary focus:ring-0 focus:border-forest-moss font-sans text-sm px-3 py-2 outline-none"
+                        type="text" placeholder="Enter your full name..." />
+                </div>
+                <div class="space-y-1">
+                    <label for="input-username" class="font-mono text-xs text-primary font-bold block">UNIQUE
+                        USERNAME</label>
+                    <input id="input-username" required
+                        class="w-full bg-surface-container border-2 border-primary focus:ring-0 focus:border-forest-moss font-mono text-sm px-3 py-2 outline-none"
+                        type="text" placeholder="e.g., warden_77" />
+                    <p id="login-error-msg" class="font-mono text-[10px] text-error font-bold hidden">Username already
+                        taken or invalid.</p>
+                </div>
+                <div
+                    class="bg-surface-container-low p-3 border border-dashed border-outline-variant font-sans text-[11px] text-on-surface-variant">
+                    Logging in creates or accesses your unique citizen profile, saved in the database.
+                </div>
+                <button type="submit"
+                    class="w-full border-2 border-primary bg-primary text-white font-mono text-xs py-3 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#1a1c1b] transition-all font-bold">
+                    ENTER LOCAL MAP
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('left-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (window.innerWidth < 768) {
+                // Mobile: Simple slide in/out wrapper
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.remove('sidebar-minimized');
+                    overlay.classList.remove('hidden');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                }
+                return;
+            }
+
+            // Desktop: Complex minimized logic
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.remove('sidebar-minimized');
+            } else {
+                sidebar.classList.toggle('sidebar-minimized');
+                if (window.scrollY <= 50 && sidebar.classList.contains('sidebar-minimized')) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            }
+        }
+
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('top-header');
+            const sidebar = document.getElementById('left-sidebar');
+            const currentScrollY = window.scrollY;
+
+            if (window.innerWidth < 768) {
+                // Mobile logic: header hides on scroll down, shows on scroll up
+                if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                    // Scrolling down
+                    header.classList.remove('translate-y-0');
+                    header.classList.add('-translate-y-full');
+                } else {
+                    // Scrolling up or at top
+                    header.classList.remove('-translate-y-full');
+                    header.classList.add('translate-y-0');
+                }
+            } else {
+                // Desktop logic
+                if (currentScrollY > 50) {
+                    // Scrolled down
+                    header.classList.remove('translate-y-0');
+                    header.classList.add('-translate-y-full');
+                    sidebar.classList.remove('-translate-x-full');
+                    if (!sidebar.classList.contains('was-scrolled')) {
+                        sidebar.classList.add('sidebar-minimized');
+                        sidebar.classList.add('was-scrolled');
+                    }
+                } else {
+                    // At the top
+                    header.classList.remove('-translate-y-full');
+                    header.classList.add('translate-y-0');
+                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('was-scrolled');
+                }
+            }
+            lastScrollY = currentScrollY;
+        });
+        window.dispatchEvent(new Event('scroll'));
+    </script>
+</body>
+
+</html>

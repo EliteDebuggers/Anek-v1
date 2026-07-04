@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+}
+
+.brutalist-border {
+  border: 3px solid #1a1c1b;
+}
+
+.brutalist-shadow {
+  box-shadow: 4px 4px 0px 0px #1a1c1b;
+}
+
+.brutalist-shadow-moss {
+  box-shadow: 4px 4px 0px 0px #4f772d;
+}
+
+.brutalist-shadow-gold {
+  box-shadow: 4px 4px 0px 0px #c5a059;
+}
+
+.btn-brutalist {
+  border: 3px solid #1a1c1b;
+  box-shadow: 4px 4px 0px 0px #1a1c1b;
+  transition: all 0.1s ease;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.btn-brutalist:active {
+  box-shadow: 0px 0px 0px 0px #1a1c1b;
+  top: 4px;
+  left: 4px;
+}
+
+.paper-texture {
+  background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png");
+  background-repeat: repeat;
+}
+
+.paper-fibers {
+  background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+  background-repeat: repeat;
+}
+
+.felt-texture {
+  background-image: url("https://www.transparenttextures.com/patterns/felt.png");
+  background-repeat: repeat;
+}
+
+.pinstripe-texture {
+  background-image: url("https://www.transparenttextures.com/patterns/pinstriped-suit.png");
+  background-repeat: repeat;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(45, 77, 60, 0.15);
+}
+
+.dark-glass-card {
+  background: rgba(11, 31, 23, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(197, 160, 89, 0.2);
+}
+
+.sidebar-minimized {
+    width: 80px !important;
+}
+
+.sidebar-minimized .hide-on-minimize {
+    display: none !important;
+}
+
+.sidebar-minimized #vine-container {
+    padding-left: 0 !important;
+    align-items: center;
+}
+
+.sidebar-minimized #vine-svg {
+    display: none !important;
+}
+
+.sidebar-minimized .nav-btn {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.sidebar-minimized .nav-btn>div:last-child {
+    display: none !important;
+}
+
+.sidebar-minimized #sidebar-toggle-btn {
+    right: 50% !important;
+    transform: translateX(50%);
+}
+
+.sidebar-minimized .nav-btn:hover {
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+.nav-item-active {
+    background-color: rgba(45, 74, 62, 0.1);
+    border-color: #2d4a3e;
+    box-shadow: 4px 4px 0px 0px #2d4a3e;
+}
+
+.nav-icon-active {
+    background-color: #ffffff;
+    border-color: #2d4a3e;
+    color: #2d4a3e;
+}
+
+.sidebar-minimized .nav-item-active {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.sidebar-minimized .nav-icon-active {
+    background-color: #e2f1ea !important;
+    border-color: #2d4a3e !important;
+    color: #2d4a3e !important;
+}
+
+/* Urgency Button Active States */
+.active-priority {
+    background-color: #facc15 !important; /* bg-yellow-400 */
+    color: #000000 !important;
+}
+
+.active-emergency {
+    background-color: #ba1a1a !important; /* bg-error */
+    color: #ffffff !important;
+}
+
+.active-standard {
+    background-color: #4f772d !important; /* bg-forest-moss */
+    color: #ffffff !important;
+}

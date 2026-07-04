@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Anek | Rewards &amp; Citizenship</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Manrope:wght@200..800&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <script type="module" src="/src/main.js"></script>
+</head>
+
+<body
+    class="overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container pinstripe-texture min-h-screen flex flex-col">
+
+    <header
+        class="bg-white h-16 sticky top-0 z-40 border-b-2 border-outline-variant flex justify-between items-center px-margin w-full max-w-full">
+        <div class="flex items-center gap-sm">
+            <button
+                class="material-symbols-outlined text-primary hover:bg-primary-container p-1 border-2 border-transparent hover:border-primary transition-all"
+                id="sidebar-toggle">menu</button>
+            <a href="/"
+                class="font-cabin text-3xl font-bold text-primary tracking-tighter uppercase ml-2 hover:opacity-80 transition-opacity">Anek</a>
+        </div>
+        <div class="flex items-center gap-sm">
+            <div
+                class="hidden sm:flex items-center gap-2 bg-surface-container-low px-3 py-1 border-2 border-primary text-xs font-mono">
+                <span class="w-2.5 h-2.5 rounded-full bg-forest-moss"></span>
+                <span>Active Session: <strong id="header-username">Warden.77</strong></span>
+            </div>
+            <a href="#"
+                onclick="if(confirm('Whoa there, going somewhere? Sure you wanna log out?')) window.location.href='/index.html'; return false;"
+                class="material-symbols-outlined text-on-surface-variant hover:text-red-600 transition-all"
+                title="Logout">logout</a>
+        </div>
+    </header>
+
+    <div class="flex flex-1">
+
+        <anek-sidebar></anek-sidebar>
+
+        <main class="flex-grow px-margin py-lg max-w-[1600px] mx-auto min-h-screen" id="main-content">
+
+            <section class="mb-xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-md">
+                    <div class="max-w-xl">
+                        <h1 class="font-cabin text-5xl md:text-6xl text-primary leading-none select-none">Good Citizen
+                            Rewards</h1>
+                        <p
+                            class="font-sans text-sm text-on-surface-variant mt-6 border-l-4 border-primary pl-4 py-1 italic bg-white/50">
+                            Your commitment to the community fuels local resilience. You did the work, now get the
+                            reward!
+                        </p>
+                    </div>
+                    <div
+                        class="brutalist-card brutalist-shadow p-sm bg-primary-container flex flex-col items-center min-w-[160px] border-2 border-primary">
+                        <p class="font-mono text-[9px] uppercase text-primary font-bold tracking-wider">Current Balance
+                        </p>
+                        <p class="font-cabin text-3xl text-primary mt-1"><span id="gcp-balance-display">120</span> <span
+                                class="text-xs font-mono font-bold uppercase">GCP</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="flex flex-col lg:flex-row gap-gutter items-start">
+
+                <div class="w-full lg:w-[40%] flex flex-col gap-gutter">
+
+                    <div
+                        class="luminous-paper p-md paper-cutout relative overflow-hidden select-none border-2 border-primary">
+                        <div class="hatch-bg absolute inset-0 opacity-40 pointer-events-none"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-xs mb-sm">
+                                <span
+                                    class="bg-primary text-on-primary px-2 py-0.5 font-mono text-[9px] uppercase border-2 border-primary font-bold">Active
+                                    Status</span>
+                            </div>
+                            <h3 class="font-cabin text-3xl text-primary leading-tight mb-xs" id="user-current-rank">
+                                Vanguard Rank II</h3>
+                            <p
+                                class="font-sans text-xs text-on-primary-container mt-2 border-l-2 border-primary pl-3 italic">
+                                Active citizen, planting seeds of change and resolving local problems.
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-md mt-lg relative z-10">
+                            <div class="flex flex-col w-full">
+                                <span class="font-mono text-[9px] uppercase text-primary font-bold">Next Rank
+                                    Progress</span>
+                                <div class="w-full h-5 bg-white border-2 border-primary mt-1 overflow-hidden">
+                                    <div id="progress-bar-fill" class="h-full bg-primary" style="width: 40%;"></div>
+                                </div>
+                                <span id="progress-text-display"
+                                    class="font-mono text-[9px] mt-2 text-primary font-bold uppercase italic">120/300
+                                    GCP to Vanguard Elder</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="brutalist-card p-md paper-cutout border-2 border-primary brutalist-shadow select-none">
+                        <h3 class="font-cabin text-2xl mb-md border-b-2 border-primary pb-1 text-primary">Achievement
+                            Wall</h3>
+                        <div class="flex flex-wrap gap-md justify-center py-sm">
+                            <div class="flex flex-col items-center group">
+                                <div
+                                    class="w-14 h-14 bg-secondary-container border-2 border-primary paper-tag mb-xs group-hover:rotate-6 transition-transform flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-2xl text-primary"
+                                        style="font-variation-settings: 'FILL' 1;">eco</span>
+                                </div>
+                                <span
+                                    class="font-mono text-[8px] uppercase font-bold text-center w-16 text-primary">Green
+                                    Thumb</span>
+                            </div>
+                            <div class="flex flex-col items-center group">
+                                <div
+                                    class="w-14 h-14 bg-primary-container border-2 border-primary paper-tag mb-xs group-hover:-rotate-6 transition-transform flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-2xl text-primary"
+                                        style="font-variation-settings: 'FILL' 1;">handshake</span>
+                                </div>
+                                <span
+                                    class="font-mono text-[8px] uppercase font-bold text-center w-16 text-primary">Partner</span>
+                            </div>
+                            <div class="flex flex-col items-center group">
+                                <div
+                                    class="w-14 h-14 bg-tertiary-container border-2 border-primary paper-tag mb-xs group-hover:rotate-12 transition-transform flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-2xl text-primary"
+                                        style="font-variation-settings: 'FILL' 1;">campaign</span>
+                                </div>
+                                <span
+                                    class="font-mono text-[8px] uppercase font-bold text-center w-16 text-primary">Vocal
+                                    Ally</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-[60%]">
+                    <section class="mb-xl">
+                        <div class="flex items-center justify-between mb-lg border-b-2 border-primary pb-2 select-none">
+                            <h2 class="font-cabin text-3xl text-primary uppercase">Redeemable Rewards</h2>
+                        </div>
+                        <div id="rewards-catalog-container" class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                            <!-- Rewards loaded dynamically from the backend -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[100] space-y-2 pointer-events-none"></div>
+
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center bg-white px-xs py-2 border-t-2 border-primary z-50">
+        <a href="/local_impact.html"
+            class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">map</span>
+            <span class="font-mono text-[9px]">Map</span>
+        </a>
+        <a href="/report_problem.html"
+            class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">edit_note</span>
+            <span class="font-mono text-[9px]">Report</span>
+        </a>
+        <a href="/contribution_log.html"
+            class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">auto_graph</span>
+            <span class="font-mono text-[9px]">Log</span>
+        </a>
+        <a href="/leaderboard.html"
+            class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">military_tech</span>
+            <span class="font-mono text-[9px]">Leader</span>
+        </a>
+        <a href="/rewards.html"
+            class="flex flex-col items-center justify-center text-primary active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">gavel</span>
+            <span class="font-mono text-[9px]">Rewards</span>
+        </a>
+    </nav>
+
+    <footer
+        class="w-full py-md border-t-2 border-dashed border-outline-variant bg-white flex flex-col items-center gap-xs px-margin text-center mb-16 md:mb-0">
+        <div class="font-mono text-xs font-bold text-primary uppercase">ANEK CIVIC NETWORK</div>
+        <p class="font-mono text-[9px] text-on-surface-variant opacity-60">
+            © 2026 Anek Civic Action Network · Hand-crafted for local resilience.
+        </p>
+    </footer>
+
+    <script type="module">
+        // User session checks
+        let currentUser = JSON.parse(localStorage.getItem('anek_current_user') || '{"name":"Citizen","username":"citizen"}');
+        
+        let gcp = 0;
+        let userRank = 'Vanguard Rank I';
+        let rewards = [];
+
+        async function loadProfileAndRewards() {
+            try {
+                // 1. Fetch profile
+                const profileRes = await apiFetch('/users/profile');
+                if (profileRes && profileRes.ok) {
+                    const profileData = await profileRes.json();
+                    currentUser.name = profileData.user.name;
+                    currentUser.username = profileData.user.username;
+                    localStorage.setItem('anek_current_user', JSON.stringify(currentUser));
+
+                    if (document.getElementById('header-username')) document.getElementById('header-username').innerText = '@' + currentUser.username;
+                    if (document.getElementById('profile-name')) document.getElementById('profile-name').innerText = currentUser.name;
+                    if (document.getElementById('profile-username')) document.getElementById('profile-username').innerText = '@' + currentUser.username;
+                    if (document.getElementById('profile-avatar')) document.getElementById('profile-avatar').innerText = currentUser.name.charAt(0).toUpperCase();
+
+                    gcp = profileData.user.points;
+                    userRank = profileData.user.rank;
+                    updateGCPUI();
+                }
+
+                // 2. Fetch Rewards
+                const rewardsRes = await apiFetch('/rewards');
+                if (rewardsRes && rewardsRes.ok) {
+                    const rewardsData = await rewardsRes.json();
+                    rewards = rewardsData.rewards;
+                    renderRewards();
+                }
+            } catch (err) {
+                console.error('Error loading profile or rewards:', err);
+            }
+        }
+
+        function updateGCPUI() {
+            document.getElementById('gcp-balance-display').innerText = gcp;
+
+            let progressPct = Math.min(100, Math.floor((gcp / 300) * 100));
+            document.getElementById('progress-bar-fill').style.width = `${progressPct}%`;
+            document.getElementById('progress-text-display').innerText = `${gcp}/300 GCP to Vanguard Elder`;
+
+            if (document.getElementById('user-rank-badge')) document.getElementById('user-rank-badge').innerText = userRank;
+            document.getElementById('user-current-rank').innerText = userRank;
+        }
+
+        function renderRewards() {
+            const container = document.getElementById('rewards-catalog-container');
+            container.innerHTML = '';
+
+            rewards.forEach(reward => {
+                const isLocked = reward.isElderOnly && userRank !== 'Vanguard Elder';
+                
+                if (isLocked) {
+                    const card = document.createElement('div');
+                    card.className = `brutalist-card p-3 flex flex-col h-full opacity-60 col-span-1 md:col-span-2 paper-cutout border-dashed bg-surface-container-low border-2 border-primary`;
+                    card.innerHTML = `
+                        <div class="flex flex-col md:flex-row gap-md">
+                            <div class="relative w-full md:w-1/3 aspect-video border-2 border-primary border-dashed overflow-hidden bg-white shrink-0 flex items-center justify-center select-none">
+                                <span class="material-symbols-outlined text-4xl text-primary opacity-50">lock</span>
+                            </div>
+                            <div class="py-1 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h4 class="font-cabin text-xl text-primary mb-1">${reward.name}</h4>
+                                    <p class="font-sans text-xs text-on-surface-variant leading-tight">${reward.description}</p>
+                                </div>
+                                <div class="flex items-center justify-between border-t border-primary border-dashed pt-4 mt-4 select-none">
+                                    <span class="font-cabin text-lg text-primary">${reward.cost} GCP</span>
+                                    <span class="font-mono text-[9px] uppercase text-error font-bold tracking-[0.2em]">LOCKED - RANK ELDER</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                } else {
+                    const card = document.createElement('div');
+                    card.className = `brutalist-card p-3 group flex flex-col h-full paper-cutout border-2 border-primary brutalist-shadow`;
+                    
+                    const tagBg = reward.partnerName === 'LOCAL LABS' ? 'bg-primary text-on-primary' : 'bg-secondary text-on-secondary';
+                    const fallbackImg = reward.name.includes('Coffee') 
+                        ? 'https://lh3.googleusercontent.com/aida-public/AB6AXuCsGqvabIPK1Yud-Mn_m7oj0_44KqFI9a8VW4LvBdCmO0RFN3EHlkhkYGGba7zSrAPXVlk-cOJDFo02TTzMBGpX1uMqL9u3d7pAbjyI9hsBD-rov7pWQ52VjBi7NDbSzxr6HJ9E_A_A6Yy2SXc-F50Ckz5-QbCqrfaYE_0xEiU2Zyu3kx48jw8OsYtoExILUiRIv17cZ7F4pYf_E4tu55kVVMOxBua1vJbDEiRiNegh-45YvODJb210N6qLPPwIXGklu4BuWs6gbsw'
+                        : 'https://lh3.googleusercontent.com/aida-public/AB6AXuDHwiHFmkh1R_y8Wjmd_HzLMtT7pPk3juuVRFrJ6HLieOQD4cVKJZ-94QYmbQkrqeRifhL9mhTqWtdBzyAf6XtbDQ4jCjDrEfYHQ3SwKc_tRAhE7UrTY_l4a_uoHrNHv1nDXMA9tkP3EXLxAvCIKDTI1hMbcjhTk9mg4pEIyH63h4ZQyI8wfuZi51vOY_b0j0Jm9TEKmvD_jv9nPToe6UdOPcbiD1ompDAnlgTIpfogZYZzjjE2lICyfNyD0Nr11r5whf8raLlMm5g';
+
+                    card.innerHTML = `
+                        <div class="relative w-full aspect-video border-2 border-primary overflow-hidden mb-sm select-none">
+                            <div class="absolute top-2 left-2 z-10 ${tagBg} px-2 py-0.5 font-mono text-[8px] font-bold border-2 border-primary uppercase">
+                                ${reward.partnerName}
+                            </div>
+                            <img alt="${reward.name}"
+                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                                src="${reward.imageUrl || fallbackImg}" />
+                        </div>
+                        <div class="px-1 pb-sm flex-grow">
+                            <h4 class="font-cabin text-xl text-primary mb-xs border-b-2 border-primary inline-block">
+                                ${reward.name}
+                            </h4>
+                            <p class="font-sans text-xs text-on-surface-variant mb-md italic leading-tight">
+                                ${reward.description}
+                            </p>
+                        </div>
+                        <div class="mt-auto px-1 pb-2">
+                            <div class="flex items-center justify-between pt-sm border-t border-primary border-dashed">
+                                <span class="font-cabin text-lg text-primary">${reward.cost} GCP</span>
+                                <button onclick="redeemReward('${reward._id}', '${reward.name}', ${reward.cost})"
+                                    class="btn-brutalist bg-white text-primary font-mono text-xs font-bold px-4 py-2 uppercase tracking-wider hover:bg-primary hover:text-on-primary transition-all">Redeem</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                }
+            });
+        }
+
+        window.redeemReward = async function (id, name, cost) {
+            if (gcp < cost) {
+                showToast("Broke alert! You don't have enough GCP. Go do some quests!", true);
+                return;
+            }
+
+            try {
+                const response = await apiFetch('/rewards/redeem', {
+                    method: 'POST',
+                    body: JSON.stringify({ rewardId: id })
+                });
+
+                if (response && response.ok) {
+                    const data = await response.json();
+                    showToast(`Nice! Copped "${name}". Voucher: ${data.voucherCode}`, false);
+                    await loadProfileAndRewards();
+                } else {
+                    const errorData = await response.json();
+                    showToast(errorData.message || "Failed to redeem reward.", true);
+                }
+            } catch (err) {
+                console.error('Error redeeming reward:', err);
+                showToast("Could not redeem reward due to network error.", true);
+            }
+        };
+
+        // Custom Toast notification generator
+        function showToast(message, isError) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            const borderCol = isError ? 'border-red-600' : 'border-forest-moss';
+            const bgCol = isError ? 'bg-red-50 text-red-800' : 'bg-green-50 text-forest-moss';
+
+            toast.className = `p-4 border-2 ${borderCol} ${bgCol} shadow-[3px_3px_0px_0px_#1a1c1b] font-mono text-xs max-w-sm pointer-events-auto transition-all duration-300 opacity-0 translate-y-2`;
+            toast.innerText = message;
+
+            container.appendChild(toast);
+
+            // Fade in
+            setTimeout(() => {
+                toast.classList.remove('opacity-0', 'translate-y-2');
+            }, 50);
+
+            // Fade out and remove
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 4000);
+        }
+
+        // Load data on start
+        loadProfileAndRewards();
+    </script>
+</body>
+
+</html>

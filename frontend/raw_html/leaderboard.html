@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ank | Citizen Leaderboard &amp; Partnerships</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700;800&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;family=Work+Sans:wght@400;500;600&amp;family=Cabin+Sketch:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: #f8faf9;
+            background-image: url("https://www.transparenttextures.com/patterns/felt.png"); /* Subtle grain texture */
+        }
+        .font-sketch { font-family: 'Cabin Sketch', cursive; }
+        .font-mono { font-family: 'Space Mono', monospace; }
+        .font-display { font-family: 'Cabin Sketch', cursive; } /* Overriding display with Sketch for brutalist feel */
+
+        /* Brutalist Paper Aesthetic Styles */
+        .paper-border {
+            border: 3px solid #1a1c1b;
+            box-shadow: 4px 4px 0px 0px #1a1c1b;
+            background-color: #ffffff;
+            position: relative;
+        }
+        
+        .paper-border-double {
+            border: 4px double #1a1c1b;
+            box-shadow: 6px 6px 0px 0px #1a1c1b;
+            background-color: #ffffff;
+        }
+
+        .paper-tag {
+            border: 2px solid #1a1c1b;
+            box-shadow: 2px 2px 0px 0px #1a1c1b;
+            clip-path: polygon(2% 0%, 98% 1%, 100% 4%, 99% 95%, 97% 100%, 3% 99%, 0% 96%, 1% 5%);
+        }
+
+        .paper-cutout {
+            clip-path: polygon(1% 1%, 99% 0%, 100% 5%, 98% 95%, 99% 100%, 5% 99%, 0% 98%, 2% 5%);
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+        }
+
+        .luminous-paper {
+            background-color: #e7f5ed;
+            background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png");
+            border: 3px solid #1a1c1b;
+            box-shadow: 5px 5px 0px 0px #2d4a3e;
+        }
+
+        .charcoal-sketch {
+            filter: grayscale(1) contrast(1.2);
+            border: 2px solid #1a1c1b;
+        }
+
+        .hatch-pattern {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(26, 28, 27, 0.07) 5px, rgba(26, 28, 27, 0.07) 10px);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+            color: #1a1c1b;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f2f4f3; border-left: 2px solid #1a1c1b; }
+        ::-webkit-scrollbar-thumb { background: #1a1c1b; border: 2px solid #f2f4f3; }
+
+        #sidebar {
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #sidebar.collapsed {
+            width: 80px;
+        }
+        #sidebar.collapsed .sidebar-label, 
+        #sidebar.collapsed .sidebar-header-text,
+        #sidebar.collapsed .sidebar-footer-text {
+            display: none;
+        }
+        #sidebar.collapsed .sidebar-nav-item {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .btn-brutalist {
+            border: 3px solid #1a1c1b;
+            box-shadow: 4px 4px 0px 0px #1a1c1b;
+            transition: all 0.1s;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+        .btn-brutalist:active {
+            box-shadow: 0px 0px 0px 0px #1a1c1b;
+            top: 4px;
+            left: 4px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#1a1c1b",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#e7f5ed",
+                      "on-primary-container": "#1a1c1b",
+                      "secondary": "#5a7a6c",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#d8e3dc",
+                      "on-secondary-container": "#1a2420",
+                      "tertiary": "#82a48f",
+                      "surface": "#f8faf9",
+                      "on-surface": "#191c1b",
+                      "surface-variant": "#dbe5df",
+                      "on-surface-variant": "#1a1c1b",
+                      "outline": "#1a1c1b",
+                      "background": "#f8faf9",
+                      "on-background": "#191c1b",
+                      "surface-container": "#edf1ef",
+                      "surface-container-high": "#e7ebe9",
+                      "surface-container-low": "#f2f4f3",
+                      "error": "#ba1a1a",
+                      "on-error": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0px",
+                      "lg": "0px",
+                      "xl": "0px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "64px",
+                      "md": "24px",
+                      "gutter": "20px",
+                      "margin": "24px",
+                      "xs": "8px",
+                      "base": "4px",
+                      "sm": "16px",
+                      "lg": "40px"
+              },
+              "fontFamily": {
+                      "display-lg": ["cabinSketch"],
+                      "label-md": ["spaceMono"],
+                      "body-lg": ["workSans"],
+                      "headline-lg": ["cabinSketch"],
+                      "headline-lg-mobile": ["cabinSketch"],
+                      "body-md": ["workSans"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background overflow-x-hidden">
+<header class="sticky top-0 z-50 bg-white border-b-4 border-primary flex justify-between items-center px-margin py-xs w-full max-w-full">
+<div class="flex items-center gap-sm">
+<button class="p-2 hover:bg-surface-container-low border-2 border-transparent hover:border-primary transition-all" id="sidebarToggle">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-sketch text-headline-lg font-bold text-primary tracking-tighter ml-xs">Ank</span>
+<nav class="hidden md:flex gap-md ml-lg">
+<a class="font-label-md text-label-md text-on-surface-variant hover:underline decoration-2 underline-offset-4 px-2 py-1 transition-colors" href="#">Field Notes</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:underline decoration-2 underline-offset-4 px-2 py-1 transition-colors" href="#">Civic Map</a>
+<a class="font-label-md text-label-md text-primary font-bold border-2 border-primary bg-primary-container px-3 py-1 paper-cutout" href="#">Citizen Rank</a>
+</nav>
+</div>
+<div class="flex items-center gap-sm">
+<div class="hidden sm:block relative">
+<input class="bg-white border-2 border-primary text-on-surface px-sm py-xs pl-10 font-label-md focus:outline-none focus:ring-0 focus:border-4 transition-all w-64" placeholder="Search Missions..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary text-sm">search</span>
+</div>
+<span class="material-symbols-outlined text-primary cursor-pointer border-2 border-transparent hover:border-primary p-2 transition-all">notifications</span>
+<div class="w-10 h-10 border-2 border-primary bg-primary-container flex items-center justify-center text-primary cursor-pointer hover:shadow-[2px_2px_0px_0px_#1a1c1b]">
+<span class="material-symbols-outlined text-xl">person</span>
+</div>
+</div>
+</header>
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside class="hidden md:flex flex-col h-full w-64 p-sm gap-sm bg-white border-r-4 border-primary sticky top-[64px] overflow-hidden" id="sidebar">
+<div class="mb-lg px-xs mt-4 sidebar-header-text">
+<h2 class="font-sketch text-headline-lg text-primary leading-tight">Citizen Dashboard</h2>
+<p class="font-mono text-[10px] text-primary border-t-2 border-primary pt-1 mt-1 font-bold uppercase tracking-[0.2em]">Vanguard Rank</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="sidebar-nav-item flex items-center gap-sm font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:border-2 border-2 border-transparent border-primary px-sm py-md transition-all" href="#" title="Field Notes">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="sidebar-label">Field Notes</span>
+</a>
+<a class="sidebar-nav-item flex items-center gap-sm font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low border-2 border-transparent hover:border-primary px-sm py-md transition-all" href="#" title="Civic Map">
+<span class="material-symbols-outlined">map</span>
+<span class="sidebar-label">Civic Map</span>
+</a>
+<a class="sidebar-nav-item flex items-center gap-sm font-label-md text-label-md bg-primary-container text-primary px-sm py-md border-2 border-primary shadow-[4px_4px_0px_0px_#1a1c1b] font-bold" href="#" title="Citizen Rank">
+<span class="material-symbols-outlined">military_tech</span>
+<span class="sidebar-label">Citizen Rank</span>
+</a>
+<a class="sidebar-nav-item flex items-center gap-sm font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low border-2 border-transparent hover:border-primary px-sm py-md transition-all" href="#" title="Town Hall">
+<span class="material-symbols-outlined">gavel</span>
+<span class="sidebar-label">Town Hall</span>
+</a>
+<a class="sidebar-nav-item flex items-center gap-sm font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low border-2 border-transparent hover:border-primary px-sm py-md transition-all" href="#" title="Impact Log">
+<span class="material-symbols-outlined">auto_graph</span>
+<span class="sidebar-label">Impact Log</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg flex flex-col gap-xs">
+<button class="btn-brutalist bg-primary text-on-primary font-bold py-3 mb-md sidebar-label uppercase tracking-widest">Report Issue</button>
+<a class="sidebar-nav-item flex items-center gap-sm font-label-md text-on-surface-variant hover:text-primary px-sm py-xs border-l-4 border-transparent hover:border-primary" href="#"><span class="material-symbols-outlined">settings</span> <span class="sidebar-label">Settings</span></a>
+<a class="sidebar-nav-item flex items-center gap-sm font-label-md text-on-surface-variant hover:text-primary px-sm py-xs border-l-4 border-transparent hover:border-primary" href="#"><span class="material-symbols-outlined">help</span> <span class="sidebar-label">Support</span></a>
+</div>
+</aside>
+<main class="flex-1 p-margin md:p-lg space-y-xl max-w-7xl mx-auto overflow-x-hidden">
+<section class="space-y-md">
+<div class="flex flex-col md:flex-row justify-between items-end gap-md">
+<div class="max-w-xl">
+<h1 class="font-sketch text-display-lg text-primary leading-none border-b-4 border-primary inline-block pb-2">Citizen Vanguard</h1>
+<p class="font-body-lg text-on-surface-variant mt-6 border-l-4 border-primary pl-4 py-2 italic bg-white/50">The wall of honor for those who have dedicated their hours to the greening and strengthening of our local community.</p>
+</div>
+<div class="paper-border-double p-sm bg-primary-container flex flex-col items-center min-w-[140px] paper-cutout">
+<span class="font-mono text-[10px] text-primary font-bold uppercase tracking-wider">Your Rank</span>
+<span class="font-sketch text-[64px] leading-none text-primary">#42</span>
+</div>
+</div>
+</section>
+<!-- Main Dashboard Content -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+<!-- Main Rank List -->
+<div class="lg:col-span-8 paper-border-double p-md">
+<div class="flex justify-between items-center mb-md border-b-4 border-primary pb-md">
+<h3 class="font-sketch text-headline-lg text-primary uppercase">Top Contributors</h3>
+<span class="font-mono text-label-md text-primary font-bold border-2 border-primary px-3 py-1 paper-tag">Cycle: OCT-NOV</span>
+</div>
+<div class="space-y-md">
+<!-- Rank 1 Card -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-sm luminous-paper group hover:translate-x-1 hover:-translate-y-1 transition-all cursor-pointer gap-sm">
+<div class="flex items-center gap-md">
+<span class="font-sketch text-headline-lg text-primary w-8">1.</span>
+<div class="w-16 h-16 border-2 border-primary p-1 bg-white charcoal-sketch">
+<img class="w-full h-full object-cover" data-alt="Sketch portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtEK5TxCw-hN_tBA84vbS_RIGVIbnNSr53Upnv59VQQr_mBSvx4vKRClBy8SS_bVK-YFV8Um9VYLNtm5rUBvz6jse2eqawm3Ha7gSMsH5Ej3m021jN4C0VLpj9PG3l-GqTN3-knA_qs3sDF8yuXY2btRMGFPYw6VYMpxTQLYPfsO_AcxYKe8Ykg9rGr-D4z7ZTMKHsFto8G6VIV5Xn-vQLHNLuSJDV_8CKy5zXRF74qWeYEYdY1QLUhdKVkZjatJihS433RpU3faM"/>
+</div>
+<div>
+<h4 class="font-sketch text-headline-lg text-primary">Eara Wildwood</h4>
+<p class="font-mono text-xs text-primary font-bold uppercase">Title: Canopy Guardian</p>
+</div>
+</div>
+<div class="text-right ml-12 sm:ml-0 bg-white border-2 border-primary px-4 py-2 shadow-[3px_3px_0px_0px_#1a1c1b]">
+<span class="font-sketch text-headline-lg text-primary">2,450</span>
+<p class="font-mono text-[10px] text-primary uppercase font-bold">Impact Credits</p>
+</div>
+</div>
+<!-- Rank 2 Card -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-sm bg-white border-2 border-primary hover:translate-x-1 hover:-translate-y-1 transition-all cursor-pointer gap-sm paper-cutout shadow-[4px_4px_0px_0px_#1a1c1b]">
+<div class="flex items-center gap-md">
+<span class="font-sketch text-headline-lg text-primary w-8 opacity-60">2.</span>
+<div class="w-16 h-16 border-2 border-primary p-0.5 bg-surface charcoal-sketch">
+<img class="w-full h-full object-cover" data-alt="Sketch portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqkw5mgW-veo8jZ6cHpGmqqtVO9ueMxlxA1sPmn_eFDKA2E3aFvNyQuSFzbGWSuIKWhGnvShLWLa0jJtoSP_OS8MVDcAsaU_C0-aaF-ODpdajnyEF47j-t-g7n1y-3Jx6nO01-u3TIlZbtkJftfA1EwCJBXVe0DFkUzOsZlvg1n7qrKGBe-8oOa9tIY-d4zPlUwb9C1cfdwEnzOSho86BFOONIa0CwcbYJA5deLAwzad7wAjDBY58ZeB0Reg0UXmTCYXjnrzpIvVw"/>
+</div>
+<div>
+<h4 class="font-sketch text-headline-lg text-primary">Julian Mars</h4>
+<p class="font-mono text-xs text-on-surface-variant uppercase">Title: Waterway Steward</p>
+</div>
+</div>
+<div class="text-right ml-12 sm:ml-0 bg-surface-container-low border-2 border-primary px-4 py-2">
+<span class="font-sketch text-headline-lg text-on-surface">1,890</span>
+<p class="font-mono text-[10px] text-on-surface-variant uppercase font-bold">Impact Credits</p>
+</div>
+</div>
+<!-- Rank 3 Card -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-sm bg-white border-2 border-primary hover:translate-x-1 hover:-translate-y-1 transition-all cursor-pointer gap-sm paper-cutout shadow-[4px_4px_0px_0px_#1a1c1b]">
+<div class="flex items-center gap-md">
+<span class="font-sketch text-headline-lg text-primary w-8 opacity-60">3.</span>
+<div class="w-16 h-16 border-2 border-primary p-0.5 bg-surface charcoal-sketch">
+<img class="w-full h-full object-cover" data-alt="Sketch portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq9mir78eQhXwXAVYDAGYCMDgEHbItYLRzfl8DJzKv8h4UY8wBxlIqeN-wxZgycXesSAkHwWlddjvVd0aCPFsWUlbe6LcOi5jJtzdxi7IveQ9AyiBIvMmLjrBgjqN9d4f7X45yeFy0r-fttV74fg0wO_VHwrObYniKkrreVqBIEcGbVLqKMVWxxSA6HFcZlySEF48eH_3QbRw3g2InoTwhhSvV8UdSf-Oya86K2PNXauBIh7_twUHdU_nIpMAQK94LaBGGTTOV3jQ"/>
+</div>
+<div>
+<h4 class="font-sketch text-headline-lg text-primary">Sana Khatri</h4>
+<p class="font-mono text-xs text-on-surface-variant uppercase">Title: Urban Harvester</p>
+</div>
+</div>
+<div class="text-right ml-12 sm:ml-0 bg-surface-container-low border-2 border-primary px-4 py-2">
+<span class="font-sketch text-headline-lg text-on-surface">1,720</span>
+<p class="font-mono text-[10px] text-on-surface-variant uppercase font-bold">Impact Credits</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats Column -->
+<div class="lg:col-span-4 space-y-lg">
+<div class="luminous-paper p-md paper-cutout relative overflow-hidden">
+<div class="hatch-pattern absolute inset-0 opacity-40 pointer-events-none"></div>
+<h4 class="font-sketch text-headline-lg text-primary relative">Next Milestone</h4>
+<p class="font-body-md text-on-surface-variant mt-2 relative border-l-2 border-primary pl-3">Complete 2 more soil restoration tasks to reach <strong class="text-primary underline decoration-2 underline-offset-2">Arborist</strong> rank.</p>
+<div class="mt-lg w-full h-6 bg-white border-2 border-primary overflow-hidden relative">
+<div class="h-full bg-primary" style="width: 75%"></div>
+</div>
+<div class="flex justify-between font-mono text-[10px] mt-3 text-primary font-bold uppercase relative">
+<span>75% complete</span>
+<span>Level Up</span>
+</div>
+</div>
+<div class="bg-white border-4 border-primary p-md paper-cutout shadow-[6px_6px_0px_0px_#1a1c1b]">
+<h4 class="font-sketch text-headline-lg text-primary border-b-2 border-primary pb-1 mb-md">Hall of Rewards</h4>
+<ul class="space-y-4">
+<li class="flex items-center gap-xs font-mono text-sm text-primary font-bold">
+<span class="material-symbols-outlined text-primary">check_box</span>
+<span>Free Local Transit Pass</span>
+</li>
+<li class="flex items-center gap-xs font-mono text-sm text-primary font-bold">
+<span class="material-symbols-outlined text-primary">check_box</span>
+<span>Community Seed Bank Access</span>
+</li>
+<li class="flex items-center gap-xs font-mono text-sm text-on-surface-variant opacity-40">
+<span class="material-symbols-outlined">check_box_outline_blank</span>
+<span>Voting Rights: Budget 2025</span>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Company Partnership Section -->
+<section class="space-y-lg pb-xl">
+<div class="flex items-center gap-md border-b-4 border-primary pb-md">
+<div class="w-12 h-12 bg-primary text-white flex items-center justify-center border-2 border-primary paper-cutout">
+<span class="material-symbols-outlined !text-white text-2xl">handshake</span>
+</div>
+<h2 class="font-sketch text-display-lg text-primary uppercase">Partnerships</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Partnership Card 1 -->
+<div class="bg-white border-2 border-primary p-md flex flex-col hover:shadow-[8px_8px_0px_0px_#1a1c1b] transition-all cursor-pointer group paper-cutout">
+<div class="flex justify-between items-start mb-md">
+<div class="w-16 h-16 border-2 border-primary bg-surface-container-low flex items-center justify-center overflow-hidden charcoal-sketch">
+<img class="w-full h-full object-contain p-3" data-alt="Bakery logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRywTDvJJrqJceBn335VkKH-lZuqp4cHtL3CiEDTQ8y9RTGi1GZgjXLy5IZ4EFHLx-HjtwIMjT9SpGr7Ol6zBQCGNpLJ-t7Zd9sDD3H5PgjV7HRJeWDkwLMbZvwoPHT47jSKm6vym28PgG2mRSlwbe9nlnF1r1s962j9GzeiyRW7SQ1XMepGWJrH5HoXOfZp1OZcGOq8S043k3VfVNvCD2SPjqWKg0K16lRuYnGH8VdtGurTG0ygLNcCnqTCdkwdSpTeqi-Bd8vCA"/>
+</div>
+<span class="bg-primary-container text-primary font-mono text-[10px] px-3 py-1 border-2 border-primary font-bold uppercase paper-tag">Active Mission</span>
+</div>
+<h3 class="font-sketch text-headline-lg text-on-surface mb-xs underline decoration-2">Wild Flour Bakery</h3>
+<p class="font-body-md text-on-surface-variant flex-1 leading-relaxed italic">"Zero-Waste Distribution: Help us deliver day-end breads to community shelters."</p>
+<button class="btn-brutalist mt-md w-full py-3 bg-white text-primary font-bold uppercase tracking-wider group-hover:bg-primary group-hover:text-on-primary">Join Mission</button>
+</div>
+<!-- Partnership Card 2 -->
+<div class="bg-white border-2 border-primary p-md flex flex-col hover:shadow-[8px_8px_0px_0px_#1a1c1b] transition-all cursor-pointer group paper-cutout">
+<div class="flex justify-between items-start mb-md">
+<div class="w-16 h-16 border-2 border-primary bg-surface-container-low flex items-center justify-center overflow-hidden charcoal-sketch">
+<img class="w-full h-full object-contain p-3" data-alt="Bicycle logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKHclYzX6QM-X6-oaruXyr3WoG2ZcThQe53r_1asIH62uMyQMWdhEhyp7WOWeEGgfnPIAcz3uEorTnX2JjsaJRlyM6L2vZpvJAt_1C1GW6D13ERNjMullW5L6lIQR7buUP58KSZTBbRgiETN_lB8SFTq8IQ9lSZXic3cwQGZdM6yC6qvkgfeGAK2y3kJMJVT0B9A4SAuzC3ln4c6sEgCcSgMk0-ZFu1kP1f9ysM04i-GeRhASYVMj57LFsKunAjsv958SMbVkDpd8"/>
+</div>
+<span class="bg-surface-container-high text-on-surface-variant font-mono text-[10px] px-3 py-1 border-2 border-primary font-bold uppercase paper-tag">Recurring</span>
+</div>
+<h3 class="font-sketch text-headline-lg text-on-surface mb-xs underline decoration-2">The Sprocket Hub</h3>
+<p class="font-body-md text-on-surface-variant flex-1 leading-relaxed italic">"Green Commute Workshop: Teach bike maintenance basics to local youth."</p>
+<button class="btn-brutalist mt-md w-full py-3 bg-white text-primary font-bold uppercase tracking-wider group-hover:bg-primary group-hover:text-on-primary">Join Mission</button>
+</div>
+<!-- Partnership Card 3 (Luminous Variant) -->
+<div class="luminous-paper p-md flex flex-col hover:shadow-[10px_10px_0px_0px_#1a1c1b] transition-all cursor-pointer group relative">
+<div class="absolute -top-4 right-6 bg-error text-white font-mono text-[10px] px-4 py-2 border-2 border-primary font-bold uppercase shadow-[4px_4px_0px_0px_#1a1c1b] z-10 paper-tag">Urgent Mission</div>
+<div class="flex justify-between items-start mb-md mt-2">
+<div class="w-16 h-16 bg-white border-2 border-primary flex items-center justify-center overflow-hidden charcoal-sketch">
+<img class="w-full h-full object-contain p-3" data-alt="Tech logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnTnbtMqYwq9f6Ai3hN3Y_PfK1aUhewZipUB1fAoCOcq4NrEYVvsEa8z8OLEneZ3L28YUUJFQKeAji2kar0FspjwDLxYAiwgAEts8t_AoSsbLE607-eMb3pWAfKenvYLQhgvBMsqCuhEUNGVa1l4-LbubjGs6-c9_uoKdUfEiSLeJXv2FtvI9KjbNYIA2ITLtNvBuYXO16sbur6hyBcqSJgC4LtLnEBd8tp_J8PbLV3lIbmoIAtYEvffTch2GAHkBHtlOgDmQRSH8"/>
+</div>
+</div>
+<h3 class="font-sketch text-headline-lg text-primary mb-xs underline decoration-2">Oak Coop Tech</h3>
+<p class="font-body-md text-on-primary-container flex-1 leading-relaxed font-bold italic">"Data Sovereignty Workshop: Helping residents secure local networks."</p>
+<button class="btn-brutalist mt-md w-full py-4 bg-primary text-on-primary font-bold uppercase tracking-widest">Volunteer Now</button>
+</div>
+</div>
+</section>
+</main>
+</div>
+<footer class="bg-white border-t-8 border-primary w-full py-xl px-margin text-center space-y-md paper-cutout">
+<div class="flex flex-col items-center gap-md">
+<span class="font-sketch text-display-lg text-primary border-b-4 border-primary px-4 pb-2">Ank Civic Action Network</span>
+<div class="flex flex-wrap justify-center gap-lg">
+<a class="font-label-md text-primary hover:bg-primary-container border-2 border-transparent hover:border-primary px-3 py-1 transition-all font-bold uppercase" href="#">Community Guidelines</a>
+<a class="font-label-md text-primary hover:bg-primary-container border-2 border-transparent hover:border-primary px-3 py-1 transition-all font-bold uppercase" href="#">Data Sovereignty</a>
+<a class="font-label-md text-primary hover:bg-primary-container border-2 border-transparent hover:border-primary px-3 py-1 transition-all font-bold uppercase" href="#">Local Chapters</a>
+</div>
+<div class="w-24 h-1 bg-primary mb-2"></div>
+<p class="font-label-md text-primary font-bold">© 2024 Ank Civic Action Network • <span class="italic font-sketch text-lg">Rooted in Solidarity</span></p>
+</div>
+</footer>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center bg-white border-t-4 border-primary px-xs pb-safe z-50">
+<a class="flex flex-col items-center justify-center text-primary p-3 border-r-2 border-primary flex-1 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md text-[10px] mt-1 font-bold uppercase">Digest</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary p-3 border-r-2 border-primary flex-1 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-label-md text-[10px] mt-1 font-bold uppercase">Action</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-primary border-x-2 border-primary flex-1 px-5 py-2 -translate-y-4 paper-cutout shadow-[4px_0px_0px_0px_#1a1c1b] border-2" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="font-label-md text-[10px] mt-0.5 font-bold uppercase">Rank</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary p-3 flex-1 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">workspace_premium</span>
+<span class="font-label-md text-[10px] mt-1 font-bold uppercase">Impact</span>
+</a>
+</nav>
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        if (sidebar.classList.contains('collapsed')) {
+            sidebar.classList.remove('w-64');
+            sidebar.classList.add('w-[80px]');
+        } else {
+            sidebar.classList.remove('w-[80px]');
+            sidebar.classList.add('w-64');
+        }
+    });
+</script>
+</body></html>

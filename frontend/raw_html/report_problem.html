@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ank Civic Action - Report Issue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&amp;family=Space+Mono:wght@400;700&amp;family=Work+Sans:wght@400;500&amp;family=Cabin+Sketch:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .font-cabin { font-family: 'Cabin Sketch', cursive; }
+        
+        /* Updated Sketch Border for Light Mode: Dark Charcoal */
+        .sketch-border {
+            border: 2px solid #2d312e;
+            box-shadow: 4px 4px 0px 0px #2d312e;
+        }
+
+        /* Light paper texture overlay */
+        .paper-texture {
+            background-image: url("https://www.transparenttextures.com/patterns/pinstriped-suit.png");
+            background-repeat: repeat;
+            background-color: #f8faf9;
+        }
+
+        /* Hand-drawn X for checkboxes */
+        .hand-drawn-x:checked {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232d4a3e' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6L6 18M6 6l12 12'/%3E%3C/svg%3E");
+            background-size: 80% 80%;
+            background-position: center;
+            background-repeat: no-repeat;
+            appearance: none;
+        }
+
+        /* Active state for urgency buttons */
+        .urgency-active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px 0px #2d312e !important;
+            background-color: #e2f1ea !important;
+            color: #2d4a3e !important;
+        }
+
+        /* Sidebar transitions */
+        .sidebar-expanded { width: 280px; }
+        .sidebar-collapsed { width: 80px; }
+        .sidebar-transition { transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Shiny Glassmorphism Effect for Containers */
+        .shiny-surface {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 4px 4px 0px 0px #2d312e;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#2d4a3e",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#e2f1ea",
+                        "on-primary-container": "#0b1f17",
+                        "secondary": "#516359",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#d4e8dd",
+                        "on-secondary-container": "#0e1f18",
+                        "tertiary": "#3e6374",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#c2e8fb",
+                        "on-tertiary-container": "#001f2a",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#410002",
+                        "background": "#f8faf9",
+                        "on-background": "#191c1b",
+                        "surface": "#f8faf9",
+                        "on-surface": "#191c1b",
+                        "surface-variant": "#dae5df",
+                        "on-surface-variant": "#3f4944",
+                        "outline": "#6f7974",
+                        "outline-variant": "#bfc9c3",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f2f4f3",
+                        "surface-container": "#eceee1",
+                        "surface-container-high": "#e6e9e6",
+                        "surface-container-highest": "#e1e3e0",
+                        "inverse-surface": "#2d312e",
+                        "inverse-on-surface": "#eff1ee",
+                        "surface-bright": "#f8faf9",
+                        "surface-dim": "#d8dada"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "64px",
+                        "md": "24px",
+                        "gutter": "20px",
+                        "margin": "24px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "sm": "16px",
+                        "lg": "40px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["bricolageGrotesque"],
+                        "label-md": ["spaceMono"],
+                        "body-lg": ["workSans"],
+                        "headline-lg": ["bricolageGrotesque"],
+                        "headline-lg-mobile": ["bricolageGrotesque"],
+                        "body-md": ["workSans"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex">
+<!-- Sidebar Navigation: Bright mint-white parchment style -->
+<aside class="hidden lg:flex flex-col bg-surface-container-lowest border-r-2 border-outline-variant sidebar-transition sidebar-expanded sticky top-0 h-screen z-50 overflow-hidden" id="sidebar">
+<div class="p-margin flex items-center justify-between border-b-2 border-outline-variant mb-md">
+<h1 class="font-headline-lg-mobile text-primary tracking-tighter sidebar-text">Ank</h1>
+<button class="p-1 hover:bg-surface-container transition-colors" onclick="toggleSidebar()">
+<span class="material-symbols-outlined text-primary">menu_open</span>
+</button>
+</div>
+<nav class="flex-1 px-sm space-y-sm overflow-y-auto">
+<a class="flex items-center gap-sm p-sm bg-primary-container sketch-border text-on-primary-container group transition-all" href="#">
+<span class="material-symbols-outlined shrink-0" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+<span class="font-label-md sidebar-text">Field Notes</span>
+</a>
+<a class="flex items-center gap-sm p-sm hover:bg-surface-container transition-all group" href="#">
+<span class="material-symbols-outlined shrink-0 text-on-surface-variant group-hover:text-primary">map</span>
+<span class="font-label-md sidebar-text text-on-surface-variant group-hover:text-primary">Civic Map</span>
+</a>
+<a class="flex items-center gap-sm p-sm hover:bg-surface-container transition-all group" href="#">
+<span class="material-symbols-outlined shrink-0 text-on-surface-variant group-hover:text-primary">leaderboard</span>
+<span class="font-label-md sidebar-text text-on-surface-variant group-hover:text-primary">Citizen Rank</span>
+</a>
+<a class="flex items-center gap-sm p-sm hover:bg-surface-container transition-all group" href="#">
+<span class="material-symbols-outlined shrink-0 text-on-surface-variant group-hover:text-primary">temple_buddhist</span>
+<span class="font-label-md sidebar-text text-on-surface-variant group-hover:text-primary">Town Hall</span>
+</a>
+<a class="flex items-center gap-sm p-sm hover:bg-surface-container transition-all group" href="#">
+<span class="material-symbols-outlined shrink-0 text-on-surface-variant group-hover:text-primary">history_edu</span>
+<span class="font-label-md sidebar-text text-on-surface-variant group-hover:text-primary">Impact Log</span>
+</a>
+</nav>
+<div class="p-sm border-t-2 border-outline-variant bg-surface-container-low">
+<div class="flex items-center gap-sm p-sm">
+<span class="material-symbols-outlined text-primary shrink-0">account_circle</span>
+<div class="sidebar-text overflow-hidden">
+<p class="font-label-md text-xs truncate text-on-surface">Warden.77</p>
+<p class="font-label-md text-[10px] text-on-surface-variant truncate">Elite Conservator</p>
+</div>
+</div>
+</div>
+</aside>
+<div class="flex-1 flex flex-col min-w-0">
+<!-- Top Navigation (Mobile/Tablet) -->
+<header class="lg:hidden bg-surface-container-lowest sticky top-0 z-40 flex justify-between items-center px-margin py-xs w-full border-b-2 border-outline-variant">
+<div class="flex items-center gap-sm">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary tracking-tighter">Ank</h1>
+</div>
+<div class="flex gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-x-hidden paper-texture">
+<div class="max-w-[1440px] mx-auto px-margin pt-lg pb-xl">
+<!-- Header Section -->
+<section class="mb-lg space-y-xs">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+<span class="font-label-md text-label-md text-primary tracking-widest uppercase">Field Report Form</span>
+</div>
+<h2 class="font-cabin text-5xl md:text-6xl text-inverse-surface leading-none">Report a Problem</h2>
+<p class="font-body-lg text-on-surface-variant max-w-xl">
+                    Document local issues to trigger civic intervention. Your report is pinned to the community map for collective action.
+                </p>
+</section>
+<!-- Side-by-Side Responsive Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-lg items-start">
+<!-- Left Column: Location Map -->
+<div class="space-y-md sticky top-lg">
+<div class="shiny-surface p-md space-y-sm">
+<div class="flex justify-between items-center">
+<h3 class="font-cabin text-2xl text-secondary">Pin Location</h3>
+<div class="flex items-center gap-xs text-primary font-label-md">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-xs">Auto-detecting GPS...</span>
+</div>
+</div>
+<div class="w-full h-[400px] xl:h-[600px] sketch-border relative overflow-hidden group">
+<!-- Map Placeholder -->
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDTYhB10T2y4qiBv8OTArjR7O3YtEQ1vrTUy5ddTUgBJ-j8obE23J8s3p1f4OFurvSyR_o7Vz4gqs-ElzcjsXhTxnzsTVBFCEP7ww2icXP_taHwb5yRpzKootM6hkfxyLBguYw9XbVY9NsTsbWODS6Cb7hU-1Vu-BrxqKYxKPqpgIVcUefchGgerHWoH75fu5yvIKI-rqn8PaVakm_j-Qpr2Kr3ORFhX7o3tqx0WYC4ro3fjALxwoSUYABZSzidS4NuR3Tuq8oc8og')"></div>
+<div class="absolute inset-0 bg-white/10 pointer-events-none"></div>
+<div class="absolute bottom-sm right-sm bg-primary-container sketch-border p-xs flex items-center gap-xs cursor-pointer hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-sm">recenter</span>
+<span class="font-label-md text-xs">Recenter</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-sm sketch-border">
+<p class="font-label-md text-xs text-on-surface-variant">
+                                Current Coordinates: <span class="text-primary">52.5200° N, 13.4050° E</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Right Column: The Report Form -->
+<form class="space-y-lg" onsubmit="event.preventDefault(); alert('Report submitted to the Town Hall.');">
+<!-- Issue Categorization -->
+<div class="shiny-surface p-md space-y-sm">
+<h3 class="font-cabin text-2xl text-secondary">Nature of Issue</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<label class="flex items-center gap-sm group cursor-pointer">
+<input class="w-8 h-8 sketch-border bg-surface hand-drawn-x rounded-none border-2 border-inverse-surface" type="checkbox"/>
+<span class="font-label-md text-on-surface group-hover:text-primary">Water Logging</span>
+</label>
+<label class="flex items-center gap-sm group cursor-pointer">
+<input class="w-8 h-8 sketch-border bg-surface hand-drawn-x rounded-none border-2 border-inverse-surface" type="checkbox"/>
+<span class="font-label-md text-on-surface group-hover:text-primary">Illegal Garbage Dump</span>
+</label>
+<label class="flex items-center gap-sm group cursor-pointer">
+<input class="w-8 h-8 sketch-border bg-surface hand-drawn-x rounded-none border-2 border-inverse-surface" type="checkbox"/>
+<span class="font-label-md text-on-surface group-hover:text-primary">Pothole / Road Damage</span>
+</label>
+<label class="flex items-center gap-sm group cursor-pointer">
+<input class="w-8 h-8 sketch-border bg-surface hand-drawn-x rounded-none border-2 border-inverse-surface" type="checkbox"/>
+<span class="font-label-md text-on-surface group-hover:text-primary">Broken Streetlights</span>
+</label>
+</div>
+</div>
+<!-- Urgency Filters -->
+<div class="space-y-sm">
+<h3 class="font-cabin text-2xl text-secondary">Urgency Level</h3>
+<div class="flex flex-wrap gap-sm">
+<button class="urgency-btn sketch-border px-lg py-xs font-label-md bg-white text-on-surface hover:bg-primary-container transition-all" onclick="setUrgency(this)" type="button">
+                                Priority
+                            </button>
+<button class="urgency-btn sketch-border px-lg py-xs font-label-md bg-white text-on-surface hover:bg-error-container transition-all" onclick="setUrgency(this)" type="button">
+                                Emergency
+                            </button>
+<button class="urgency-btn sketch-border px-lg py-xs font-label-md bg-white text-on-surface hover:bg-surface-container-highest transition-all" onclick="setUrgency(this)" type="button">
+                                Dead
+                            </button>
+</div>
+</div>
+<!-- Media Upload -->
+<div class="shiny-surface p-md space-y-sm">
+<h3 class="font-cabin text-2xl text-secondary">Visual Proof (Photo/Video)</h3>
+<div class="border-2 border-dashed border-outline p-xl text-center space-y-sm hover:border-primary transition-colors cursor-pointer group" id="dropzone">
+<span class="material-symbols-outlined text-4xl text-outline group-hover:text-primary">cloud_upload</span>
+<p class="font-body-md text-on-surface-variant">Tap to sketch upload or drag media here</p>
+<p class="font-label-md text-xs text-outline italic">Max file size 15MB. MP4, JPG, PNG accepted.</p>
+</div>
+<div class="flex gap-sm overflow-x-auto py-xs">
+<div class="flex-shrink-0 w-24 h-24 sketch-border bg-surface-container-low flex items-center justify-center cursor-pointer hover:bg-primary-container transition-colors group">
+<span class="material-symbols-outlined text-outline group-hover:text-primary">add_a_photo</span>
+</div>
+</div>
+</div>
+<!-- Description -->
+<div class="space-y-sm">
+<h3 class="font-cabin text-2xl text-secondary">Field Notes</h3>
+<textarea class="w-full h-40 sketch-border bg-white p-md font-body-md text-on-surface focus:ring-0 focus:border-primary transition-all outline-none placeholder:text-outline" placeholder="Provide specific details about the issue. Landmarks, time of discovery, and impact on the local ecosystem..."></textarea>
+</div>
+<!-- Submit Button -->
+<button class="w-full sketch-border bg-primary text-on-primary font-cabin text-3xl py-md hover:-translate-y-1 hover:-translate-x-1 transition-all active:translate-y-0 active:translate-x-0 group" type="submit">
+                        SUBMIT FIELD REPORT
+                        <span class="inline-block transform transition-transform group-hover:translate-x-2 material-symbols-outlined align-middle ml-xs">send</span>
+</button>
+</form>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-xl flex flex-col items-center gap-md px-margin text-center w-full py-xl border-t-2 border-dashed border-outline-variant bg-surface-container-lowest">
+<div class="flex flex-wrap justify-center gap-md font-label-md text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Community Guidelines</a>
+<a class="hover:text-primary transition-colors" href="#">Data Sovereignty</a>
+<a class="hover:text-primary transition-colors" href="#">Local Chapters</a>
+</div>
+<p class="font-label-md text-on-surface-variant opacity-70">© 2024 Ank Civic Action Network</p>
+</footer>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center bg-surface-container-lowest px-xs pb-safe border-t-2 border-outline-variant z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md text-[10px]">Daily Digest</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-none border-2 border-inverse-surface px-4 py-1 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">campaign</span>
+<span class="font-label-md text-[10px]">Action</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-md text-[10px]">Network</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">workspace_premium</span>
+<span class="font-label-md text-[10px]">Impact</span>
+</a>
+</nav>
+</div>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const labels = document.querySelectorAll('.sidebar-text');
+        
+        if (sidebar.classList.contains('sidebar-expanded')) {
+            sidebar.classList.remove('sidebar-expanded');
+            sidebar.classList.add('sidebar-collapsed');
+            labels.forEach(l => l.classList.add('hidden'));
+        } else {
+            sidebar.classList.remove('sidebar-collapsed');
+            sidebar.classList.add('sidebar-expanded');
+            labels.forEach(l => l.classList.remove('hidden'));
+        }
+    }
+
+    function setUrgency(btn) {
+        document.querySelectorAll('.urgency-btn').forEach(el => {
+            el.classList.remove('urgency-active');
+        });
+        btn.classList.add('urgency-active');
+    }
+
+    const dropzone = document.getElementById('dropzone');
+    
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('drop-zone-active');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+        dropzone.classList.remove('drop-zone-active');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('drop-zone-active');
+        alert('File captured for analysis.');
+    });
+</script>
+</body></html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ank | Community &amp; Rewards</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700;800&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Cabin+Sketch:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: #f8faf9;
+            background-image: url("https://www.transparenttextures.com/patterns/felt.png");
+        }
+        .cabin-sketch { font-family: 'Cabin Sketch', cursive; }
+        
+        /* Brutalist Paper Aesthetic Styles from SCREEN_37 */
+        .paper-border {
+            border: 3px solid #1a1c1b;
+            box-shadow: 4px 4px 0px 0px #1a1c1b;
+            background-color: #ffffff;
+            position: relative;
+        }
+        
+        .paper-border-double {
+            border: 4px double #1a1c1b;
+            box-shadow: 6px 6px 0px 0px #1a1c1b;
+            background-color: #ffffff;
+        }
+
+        .paper-tag {
+            border: 2px solid #1a1c1b;
+            box-shadow: 2px 2px 0px 0px #1a1c1b;
+            clip-path: polygon(2% 0%, 98% 1%, 100% 4%, 99% 95%, 97% 100%, 3% 99%, 0% 96%, 1% 5%);
+        }
+
+        .paper-cutout {
+            clip-path: polygon(1% 1%, 99% 0%, 100% 5%, 98% 95%, 99% 100%, 5% 99%, 0% 98%, 2% 5%);
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+        }
+
+        .luminous-paper {
+            background-color: #e7f5ed;
+            background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png");
+            border: 3px solid #1a1c1b;
+            box-shadow: 5px 5px 0px 0px #2d4a3e;
+        }
+
+        .hatch-bg {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(26, 28, 27, 0.07) 5px, rgba(26, 28, 27, 0.07) 10px);
+        }
+
+        .btn-brutalist {
+            border: 3px solid #1a1c1b;
+            box-shadow: 4px 4px 0px 0px #1a1c1b;
+            transition: all 0.1s;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+        .btn-brutalist:active {
+            box-shadow: 0px 0px 0px 0px #1a1c1b;
+            top: 4px;
+            left: 4px;
+        }
+
+        #sidebar {
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #sidebar.collapsed {
+            width: 80px;
+        }
+        #sidebar.collapsed .sidebar-text,
+        #sidebar.collapsed .sidebar-header-text,
+        #sidebar.collapsed .sidebar-footer-text {
+            display: none;
+        }
+        #sidebar.collapsed .nav-item {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        #main-content {
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #main-content.sidebar-collapsed {
+            margin-left: 80px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "primary": "#1a1c1b",
+                "on-primary": "#ffffff",
+                "primary-container": "#e7f5ed",
+                "on-primary-container": "#1a1c1b",
+                "secondary": "#5a7a6c",
+                "on-secondary": "#ffffff",
+                "secondary-container": "#d8e3dc",
+                "on-secondary-container": "#1a2420",
+                "tertiary": "#82a48f",
+                "background": "#f8faf9",
+                "on-background": "#191c1b",
+                "surface": "#ffffff",
+                "on-surface": "#191c1b",
+                "surface-variant": "#dae5df",
+                "on-surface-variant": "#3f4945",
+                "outline": "#1a1c1b",
+                "outline-variant": "#bfc9c4",
+                "surface-container-lowest": "#ffffff",
+                "surface-container-low": "#f2f4f3",
+                "surface-container": "#edf1ef",
+                "surface-container-high": "#e6e9e7",
+                "surface-container-highest": "#e1e3e1",
+                "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                "DEFAULT": "0px",
+                "lg": "0px",
+                "xl": "0px",
+                "full": "9999px"
+            },
+            "fontFamily": {
+                "display-lg": ["cabinSketch"],
+                "label-md": ["spaceMono"],
+                "body-lg": ["workSans"],
+                "headline-lg": ["cabinSketch"],
+                "headline-lg-mobile": ["cabinSketch"],
+                "body-md": ["workSans"]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 w-full bg-surface border-b-4 border-primary flex justify-between items-center px-margin py-xs">
+<div class="flex items-center gap-sm">
+<button class="p-2 hover:bg-surface-container-low border-2 border-transparent hover:border-primary transition-all hidden md:block" id="sidebar-toggle">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+<span class="font-headline-lg text-headline-lg font-bold text-primary tracking-tighter cabin-sketch">Ank</span>
+</div>
+<nav class="hidden md:flex gap-md items-center">
+<a class="font-label-md text-label-md text-on-surface-variant hover:underline decoration-2 underline-offset-4 px-2 py-1" href="#">Daily Digest</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:underline decoration-2 underline-offset-4 px-2 py-1" href="#">Action</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:underline decoration-2 underline-offset-4 px-2 py-1" href="#">Network</a>
+<a class="font-label-md text-label-md text-primary font-bold border-2 border-primary bg-primary-container px-3 py-1 paper-cutout" href="#">Impact</a>
+</nav>
+<div class="flex items-center gap-sm">
+<div class="hidden sm:flex items-center border-2 border-primary bg-secondary-container px-sm py-1 paper-tag">
+<span class="material-symbols-outlined text-on-secondary-container text-sm mr-xs">military_tech</span>
+<span class="font-label-md text-xs text-on-secondary-container uppercase">Vanguard Rank</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:border-2 border-2 border-transparent hover:border-primary transition-all">notifications</button>
+<div class="w-10 h-10 border-2 border-primary bg-primary-container flex items-center justify-center text-primary cursor-pointer hover:shadow-[2px_2px_0px_0px_#1a1c1b]">
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+</div>
+</header>
+<div class="flex pt-[64px] pb-24 md:pb-0">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-64px)] w-64 fixed left-0 bg-white border-r-4 border-primary p-md gap-sm z-40 overflow-hidden" id="sidebar">
+<div class="mb-lg whitespace-nowrap">
+<p class="sidebar-header-text font-label-md text-[10px] text-primary border-b-2 border-primary pb-1 mb-2 font-bold uppercase tracking-[0.2em]">Active Profile</p>
+<h2 class="sidebar-header-text font-headline-lg text-headline-lg text-primary cabin-sketch leading-none">Citizen Dashboard</h2>
+</div>
+<nav class="flex flex-col gap-2 flex-grow overflow-x-hidden">
+<a class="nav-item flex items-center gap-sm text-on-surface-variant hover:bg-surface-container-low border-2 border-transparent hover:border-primary px-sm py-xs transition-all group" href="#" title="Field Notes">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">edit_note</span>
+<div class="sidebar-text flex flex-col">
+<span class="font-label-md font-bold">Field Notes</span>
+<span class="text-[10px] uppercase opacity-60">Report a Problem</span>
+</div>
+</a>
+<a class="nav-item flex items-center gap-sm text-on-surface-variant hover:bg-surface-container-low border-2 border-transparent hover:border-primary px-sm py-xs transition-all group" href="#" title="Civic Map">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">map</span>
+<div class="sidebar-text flex flex-col">
+<span class="font-label-md font-bold">Civic Map</span>
+<span class="text-[10px] uppercase opacity-60">Local Impact</span>
+</div>
+</a>
+<a class="nav-item flex items-center gap-sm text-on-surface-variant hover:bg-surface-container-low border-2 border-transparent hover:border-primary px-sm py-xs transition-all group" href="#" title="Citizen Rank">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">military_tech</span>
+<div class="sidebar-text flex flex-col">
+<span class="font-label-md font-bold">Citizen Rank</span>
+<span class="text-[10px] uppercase opacity-60">Leaderboard</span>
+</div>
+</a>
+<a class="nav-item flex items-center gap-sm text-on-surface-variant hover:bg-surface-container-low border-2 border-transparent hover:border-primary px-sm py-xs transition-all group" href="#" title="Town Hall">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">gavel</span>
+<div class="sidebar-text flex flex-col">
+<span class="font-label-md font-bold">Town Hall</span>
+<span class="text-[10px] uppercase opacity-60">Rewards</span>
+</div>
+</a>
+<a class="nav-item flex items-center gap-sm bg-primary-container text-primary border-2 border-primary shadow-[4px_4px_0px_0px_#1a1c1b] px-sm py-xs transition-all group" href="#" title="Impact Log">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">auto_graph</span>
+<div class="sidebar-text flex flex-col">
+<span class="font-label-md font-bold">Impact Log</span>
+<span class="text-[10px] uppercase opacity-60">Contribution Log</span>
+</div>
+</a>
+</nav>
+<div class="mt-auto pt-md border-t-2 border-primary flex flex-col gap-2 sidebar-divider">
+<button class="btn-brutalist bg-primary text-on-primary font-bold py-3 uppercase tracking-widest whitespace-nowrap overflow-hidden">Report Issue</button>
+<div class="flex justify-around mt-sm">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" title="Settings">settings</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary sidebar-footer-text" title="Help">help</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="w-full md:ml-64 px-margin py-lg max-w-[1600px] mx-auto min-h-screen" id="main-content">
+<!-- Header Section -->
+<section class="mb-xl">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-md">
+<div class="max-w-xl">
+<h1 class="font-display-lg text-display-lg cabin-sketch text-primary leading-none border-b-4 border-primary inline-block pb-2">Good Citizen Rewards</h1>
+<p class="font-body-lg text-on-surface-variant mt-6 border-l-4 border-primary pl-4 py-2 italic bg-white/50">Your commitment to the community fuels local resilience. Every act of service strengthens our collective soil.</p>
+</div>
+<div class="flex gap-sm">
+<div class="paper-border-double p-sm bg-primary-container flex flex-col items-center min-w-[140px] paper-cutout">
+<p class="font-label-md text-[10px] uppercase text-primary font-bold tracking-wider">Current Balance</p>
+<p class="font-headline-lg text-headline-lg text-primary cabin-sketch leading-none">1,420 <span class="text-sm font-label-md uppercase">GWP</span></p>
+</div>
+</div>
+</div>
+</section>
+<!-- Desktop Optimized Layout -->
+<div class="flex flex-col lg:flex-row gap-gutter items-start">
+<!-- Left Column: Stats & Achievement -->
+<div class="w-full lg:w-[40%] flex flex-col gap-gutter">
+<!-- Rank Card -->
+<div class="luminous-paper p-md paper-cutout relative overflow-hidden group">
+<div class="hatch-bg absolute inset-0 opacity-40 pointer-events-none"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-xs mb-sm">
+<span class="bg-primary text-on-primary px-2 py-0.5 font-label-md text-[10px] uppercase border-2 border-primary">Active Status</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-primary cabin-sketch leading-tight mb-xs">Vanguard Rank</h3>
+<p class="font-body-md text-on-primary-container mt-2 border-l-2 border-primary pl-3 italic">Top 3% of Local Contributors this season. You've earned the 'Soil Steward' badge.</p>
+</div>
+<div class="flex items-center gap-md mt-lg relative z-10">
+<div class="flex flex-col w-full">
+<span class="font-label-md text-[10px] uppercase text-primary font-bold">Next Milestone</span>
+<div class="w-full h-6 bg-white border-2 border-primary mt-1 overflow-hidden">
+<div class="h-full bg-primary" style="width: 72%;"></div>
+</div>
+<span class="font-label-md text-[10px] mt-2 text-primary font-bold uppercase italic">720/1000 GWP to Elder Citizen</span>
+</div>
+</div>
+</div>
+<!-- Stats Sub-Grid -->
+<div class="grid grid-cols-2 gap-gutter">
+<div class="paper-border p-md flex flex-col justify-center paper-cutout">
+<span class="material-symbols-outlined text-primary mb-xs">diversity_3</span>
+<p class="font-label-md text-[10px] uppercase text-primary font-bold">Contributions</p>
+<p class="font-headline-lg text-headline-lg cabin-sketch text-on-surface">248 <span class="text-xs opacity-50 uppercase">Acts</span></p>
+</div>
+<div class="paper-border p-md flex flex-col justify-center paper-cutout">
+<span class="material-symbols-outlined text-primary mb-xs">location_on</span>
+<p class="font-label-md text-[10px] uppercase text-primary font-bold">Impact Score</p>
+<p class="font-headline-lg text-headline-lg cabin-sketch text-on-surface">9.4/10</p>
+</div>
+<div class="paper-border p-md flex flex-col justify-center paper-cutout">
+<span class="material-symbols-outlined text-primary mb-xs">shield_spark</span>
+<p class="font-label-md text-[10px] uppercase text-primary font-bold">Goodwill Credit</p>
+<p class="font-headline-lg text-headline-lg cabin-sketch text-on-surface">Excellent</p>
+</div>
+<div class="paper-border p-md flex flex-col justify-center paper-cutout">
+<span class="material-symbols-outlined text-primary mb-xs">history_edu</span>
+<p class="font-label-md text-[10px] uppercase text-primary font-bold">Streak</p>
+<p class="font-headline-lg text-headline-lg cabin-sketch text-on-surface">14 <span class="text-xs opacity-50 uppercase">Days</span></p>
+</div>
+</div>
+<!-- Achievement Wall -->
+<div class="paper-border p-md paper-cutout">
+<h3 class="font-headline-lg text-headline-lg cabin-sketch mb-md border-b-2 border-primary pb-1 text-primary">Achievement Wall</h3>
+<div class="flex flex-wrap gap-md justify-center py-sm">
+<div class="flex flex-col items-center group">
+<div class="w-14 h-14 bg-secondary-container border-2 border-primary paper-tag mb-xs group-hover:rotate-6 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl text-primary" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<span class="font-label-md text-[8px] uppercase font-bold text-center w-16 text-primary">Green Thumb</span>
+</div>
+<div class="flex flex-col items-center group">
+<div class="w-14 h-14 bg-primary-container border-2 border-primary paper-tag mb-xs group-hover:-rotate-6 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl text-primary" style="font-variation-settings: 'FILL' 1;">handshake</span>
+</div>
+<span class="font-label-md text-[8px] uppercase font-bold text-center w-16 text-primary">Peacemaker</span>
+</div>
+<div class="flex flex-col items-center group">
+<div class="w-14 h-14 bg-tertiary-container border-2 border-primary paper-tag mb-xs group-hover:rotate-12 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl text-primary" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+<span class="font-label-md text-[8px] uppercase font-bold text-center w-16 text-primary">Vocal Ally</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Redeemable Rewards -->
+<div class="w-full lg:w-[60%]">
+<section class="mb-xl">
+<div class="flex items-center justify-between mb-lg border-b-4 border-primary pb-2">
+<h2 class="font-headline-lg text-headline-lg cabin-sketch text-primary uppercase">Redeemable Rewards</h2>
+<div class="flex gap-sm">
+<button class="font-label-md text-[10px] px-4 py-1 bg-primary text-on-primary font-bold uppercase border-2 border-primary hover:opacity-90">All</button>
+<button class="font-label-md text-[10px] px-4 py-1 bg-white border-2 border-primary text-primary font-bold uppercase hover:bg-surface-container-low">Vouchers</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Reward Card 1 -->
+<div class="paper-border p-3 group flex flex-col h-full paper-cutout hover:translate-x-1 hover:-translate-y-1 transition-all">
+<div class="relative w-full aspect-video border-2 border-primary overflow-hidden mb-sm">
+<div class="absolute top-2 left-2 z-10 bg-primary text-on-primary px-2 py-0.5 font-label-md text-[8px] font-bold border-2 border-primary uppercase paper-tag">LOCAL PARTNER</div>
+<img alt="Fresh organic vegetables" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHwiHFmkh1R_y8Wjmd_HzLMtT7pPk3juuVRFrJ6HLieOQD4cVKJZ-94QYmbQkrqeRifhL9mhTqWtdBzyAf6XtbDQ4jCjDrEfYHQ3SwKc_tRAhE7UrTY_l4a_uoHrNHv1nDXMA9tkP3EXLxAvCIKDTI1hMbcjhTk9mg4pEIyH63h4ZQyI8wfuZi51vOY_b0j0Jm9TEKmvD_jv9nPToe6UdOPcbiD1ompDAnlgTIpfogZYZzjjE2lICyfNyD0Nr11r5whf8raLlMm5g"/>
+</div>
+<div class="px-1 pb-sm flex-grow">
+<h4 class="font-headline-lg text-lg text-primary mb-xs border-b-2 border-primary inline-block">Community Garden Pass</h4>
+<p class="font-body-md text-sm text-on-surface-variant mb-md italic leading-tight">Unlimited access to the downtown hydroponic lab and 5kg of seasonal harvest.</p>
+</div>
+<div class="mt-auto px-1 pb-2">
+<div class="flex items-center justify-between pt-sm border-t-2 border-primary border-dashed">
+<span class="font-headline-lg text-primary cabin-sketch text-xl">450 GWP</span>
+<button class="btn-brutalist bg-white text-primary font-bold px-4 py-2 uppercase text-xs tracking-wider hover:bg-primary hover:text-on-primary transition-all">Redeem</button>
+</div>
+</div>
+</div>
+<!-- Reward Card 2 -->
+<div class="paper-border p-3 group flex flex-col h-full paper-cutout hover:translate-x-1 hover:-translate-y-1 transition-all">
+<div class="relative w-full aspect-video border-2 border-primary overflow-hidden mb-sm">
+<div class="absolute top-2 left-2 z-10 bg-secondary text-on-secondary px-2 py-0.5 font-label-md text-[8px] font-bold border-2 border-primary uppercase paper-tag">DIGITAL</div>
+<img alt="Coffee credit illustration" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsGqvabIPK1Yud-Mn_m7oj0_44KqFI9a8VW4LvBdCmO0RFN3EHlkhkYGGba7zSrAPXVlk-cOJDFo02TTzMBGpX1uMqL9u3d7pAbjyI9hsBD-rov7pWQ52VjBi7NDbSzxr6HJ9E_A_A6Yy2SXc-F50Ckz5-QbCqrfaYE_0xEiU2Zyu3kx48jw8OsYtoExILUiRIv17cZ7F4pYf_E4tu55kVVMOxBua1vJbDEiRiNegh-45YvODJb210N6qLPPwIXGklu4BuWs6gbsw"/>
+</div>
+<div class="px-1 pb-sm flex-grow">
+<h4 class="font-headline-lg text-lg text-primary mb-xs border-b-2 border-primary inline-block">$25 Coffee Credit</h4>
+<p class="font-body-md text-sm text-on-surface-variant mb-md italic leading-tight">Valid at all participating 'Ank Network' cafes. Supports fair-trade sourcing.</p>
+</div>
+<div class="mt-auto px-1 pb-2">
+<div class="flex items-center justify-between pt-sm border-t-2 border-primary border-dashed">
+<span class="font-headline-lg text-primary cabin-sketch text-xl">200 GWP</span>
+<button class="btn-brutalist bg-white text-primary font-bold px-4 py-2 uppercase text-xs tracking-wider hover:bg-primary hover:text-on-primary transition-all">Redeem</button>
+</div>
+</div>
+</div>
+<!-- Reward Card 3 (Locked) -->
+<div class="paper-border p-3 flex flex-col h-full opacity-60 col-span-1 md:col-span-2 paper-cutout border-dashed bg-surface-container-low">
+<div class="flex flex-col md:flex-row gap-md">
+<div class="relative w-full md:w-1/3 aspect-video border-2 border-primary border-dashed overflow-hidden bg-white shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-primary opacity-50">lock</span>
+</div>
+<div class="py-1 flex-grow flex flex-col justify-between">
+<div>
+<h4 class="font-headline-lg text-xl text-primary mb-1">Wilderness Retreat Voucher</h4>
+<p class="font-body-md text-sm text-on-surface-variant leading-tight">Exclusive 3-night stay at the Citizen Sanctuary. Requires Rank: Elder. Experience the deep quiet of the forest in a carbon-neutral bunker.</p>
+</div>
+<div class="flex items-center justify-between border-t-2 border-primary border-dashed pt-4 mt-4">
+<span class="font-headline-lg text-primary cabin-sketch text-xl">2,500 GWP</span>
+<span class="font-label-md text-[10px] uppercase text-error font-bold tracking-[0.2em]">LOCKED - RANK ELDER</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center bg-white border-t-4 border-primary px-xs pb-safe z-50">
+<a class="flex flex-col items-center justify-center text-primary p-3 border-r-2 border-primary flex-1 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md text-[10px] mt-1 font-bold uppercase">Daily</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary p-3 border-r-2 border-primary flex-1 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-label-md text-[10px] mt-1 font-bold uppercase">Action</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary p-3 border-r-2 border-primary flex-1 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-md text-[10px] mt-1 font-bold uppercase">Network</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-primary border-x-2 border-primary flex-1 px-5 py-2 -translate-y-4 paper-cutout shadow-[4px_0px_0px_0px_#1a1c1b] border-2" href="#">
+<span class="material-symbols-outlined">workspace_premium</span>
+<span class="font-label-md text-[10px] mt-0.5 font-bold uppercase">Impact</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="w-full py-xl bg-white border-t-8 border-primary flex flex-col items-center gap-md px-margin text-center mb-24 md:mb-0 paper-cutout" id="main-footer">
+<span class="font-sketch text-display-lg text-primary border-b-4 border-primary px-4 pb-2">Ank Civic Action Network</span>
+<div class="flex flex-wrap justify-center gap-lg">
+<a class="font-label-md text-primary hover:bg-primary-container border-2 border-transparent hover:border-primary px-3 py-1 transition-all font-bold uppercase" href="#">Community Guidelines</a>
+<a class="font-label-md text-primary hover:bg-primary-container border-2 border-transparent hover:border-primary px-3 py-1 transition-all font-bold uppercase" href="#">Data Sovereignty</a>
+<a class="font-label-md text-primary hover:bg-primary-container border-2 border-transparent hover:border-primary px-3 py-1 transition-all font-bold uppercase" href="#">Local Chapters</a>
+</div>
+<div class="w-24 h-1 bg-primary mb-2"></div>
+<p class="font-label-md text-primary font-bold">© 2024 Ank Civic Action Network • <span class="italic font-sketch text-lg">Rooted in Solidarity</span></p>
+</footer>
+<script>
+    // Collapsible Sidebar logic
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const footer = document.getElementById('main-footer');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('sidebar-collapsed');
+        
+        if (sidebar.classList.contains('collapsed')) {
+            mainContent.style.marginLeft = '80px';
+            footer.style.marginLeft = '80px';
+            sidebarToggle.querySelector('span').textContent = 'menu_open';
+        } else {
+            mainContent.style.marginLeft = '256px';
+            footer.style.marginLeft = '256px';
+            sidebarToggle.querySelector('span').textContent = 'menu';
+        }
+    });
+
+    // Micro-interaction for reward redemption
+    document.querySelectorAll('button').forEach(button => {
+        if(button.textContent.trim() === 'Redeem') {
+            button.addEventListener('click', function() {
+                const originalText = this.textContent;
+                this.textContent = 'Claiming...';
+                this.classList.add('bg-primary', 'text-white');
+                setTimeout(() => {
+                    this.textContent = 'Voucher Issued';
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.classList.remove('bg-primary', 'text-white');
+                    }, 2000);
+                }, 1000);
+            });
+        }
+    });
+</script>
+</body></html>

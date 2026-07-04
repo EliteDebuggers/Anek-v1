@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Anek | Field Notes - Report Issue</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Manrope:wght@200..800&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script type="module" src="/src/main.js"></script>
+</head>
+
+<body
+    class="overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container pinstripe-texture min-h-screen flex flex-col">
+
+    <header
+        class="bg-white h-16 sticky top-0 z-40 border-b-2 border-outline-variant flex justify-between items-center px-margin w-full max-w-full">
+        <div class="flex items-center gap-sm">
+            <button
+                class="material-symbols-outlined text-primary hover:bg-primary-container p-1 border-2 border-transparent hover:border-primary transition-all"
+                id="sidebar-toggle">menu</button>
+            <a href="/" class="font-cabin text-3xl font-bold text-primary tracking-tighter uppercase ml-2 hover:opacity-80 transition-opacity">Anek</a>
+        </div>
+        <div class="flex items-center gap-sm">
+            <div
+                class="hidden sm:flex items-center gap-2 bg-surface-container-low px-3 py-1 border-2 border-primary text-xs font-mono">
+                <span class="w-2.5 h-2.5 rounded-full bg-forest-moss"></span>
+                <span>Active Session: <strong id="header-username">Warden.77</strong></span>
+            </div>
+            <a href="#" onclick="if(confirm('Whoa there, going somewhere? Sure you wanna log out?')) window.location.href='/index.html'; return false;"
+                class="material-symbols-outlined text-on-surface-variant hover:text-red-600 transition-all"
+                title="Logout">logout</a>
+        </div>
+    </header>
+
+    <div class="flex flex-1">
+        
+        <anek-sidebar></anek-sidebar>
+
+        <main
+            class="flex-grow p-margin md:p-lg space-y-lg bg-background paper-texture transition-all overflow-x-hidden">
+            
+            <section class="mb-lg space-y-xs">
+                <div class="flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-primary"
+                        style="font-variation-settings: 'FILL' 1;">edit_note</span>
+                    <span class="font-mono text-xs text-primary tracking-widest uppercase font-bold">Field Report
+                        Form</span>
+                </div>
+                <h2 class="font-cabin text-5xl md:text-6xl text-inverse-surface leading-none select-none">Report a
+                    Problem</h2>
+                <p class="font-sans text-sm text-on-surface-variant max-w-xl">
+                    Document local issues to trigger civic intervention. Your report is pinned to the community map for
+                    collective action.
+                </p>
+            </section>
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-lg items-start">
+
+                <div class="space-y-md xl:sticky xl:top-24">
+                    <div class="glass-card p-md border-2 border-primary brutalist-shadow space-y-sm">
+                        <div class="flex justify-between items-center select-none">
+                            <h3 class="font-cabin text-2xl text-secondary">Pin Location</h3>
+                            <div class="flex items-center gap-xs text-primary font-mono text-xs font-bold">
+                                <span class="material-symbols-outlined text-sm">location_on</span>
+                                <span>GPS Active</span>
+                            </div>
+                        </div>
+                        <div id="report-leaflet-map" class="w-full h-[320px] border-2 border-primary z-0"></div>
+                        <div
+                            class="bg-surface-container-low p-sm border border-dashed border-outline-variant font-mono text-xs">
+                            Current Coordinates: <span id="coordinates-display" class="text-primary font-bold">52.5200° N, 13.4050° E</span>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="report-form" class="space-y-lg" onsubmit="handleReportSubmit(event)">
+
+                    <div class="glass-card p-md border-2 border-primary brutalist-shadow space-y-sm">
+                        <h3 class="font-cabin text-2xl text-secondary">Issue Category</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-sm" id="category-checkboxes">
+                            <label class="flex items-center gap-sm group cursor-pointer">
+                                <input name="issue-type" value="Water"
+                                    class="w-6 h-6 border-2 border-primary rounded-none text-primary focus:ring-0 focus:ring-offset-0"
+                                    type="checkbox" />
+                                <span class="font-mono text-xs font-bold text-on-surface group-hover:text-primary">Water
+                                    Logging</span>
+                            </label>
+                            <label class="flex items-center gap-sm group cursor-pointer">
+                                <input name="issue-type" value="Garbage"
+                                    class="w-6 h-6 border-2 border-primary rounded-none text-primary focus:ring-0 focus:ring-offset-0"
+                                    type="checkbox" />
+                                <span
+                                    class="font-mono text-xs font-bold text-on-surface group-hover:text-primary">Illegal
+                                    Garbage Dump</span>
+                            </label>
+                            <label class="flex items-center gap-sm group cursor-pointer">
+                                <input name="issue-type" value="Roads"
+                                    class="w-6 h-6 border-2 border-primary rounded-none text-primary focus:ring-0 focus:ring-offset-0"
+                                    type="checkbox" />
+                                <span
+                                    class="font-mono text-xs font-bold text-on-surface group-hover:text-primary">Pothole
+                                    / Road Damage</span>
+                            </label>
+                            <label class="flex items-center gap-sm group cursor-pointer">
+                                <input name="issue-type" value="Other" id="other-checkbox"
+                                    class="w-6 h-6 border-2 border-primary rounded-none text-primary focus:ring-0 focus:ring-offset-0"
+                                    type="checkbox" />
+                                <span class="font-mono text-xs font-bold text-on-surface group-hover:text-primary">Other</span>
+                            </label>
+                        </div>
+                        <input type="text" id="other-input"
+                            class="w-full mt-2 hidden border-2 border-primary p-2 font-mono text-xs focus:ring-0 focus:border-forest-moss transition-all outline-none"
+                            placeholder="Please specify...">
+                        <p id="err-category" class="font-mono text-[10px] text-error font-bold hidden">Bruh, what kind of issue is this? Pick one!</p>
+                    </div>
+
+                    <div class="glass-card p-md border-2 border-primary brutalist-shadow space-y-sm">
+                        <h3 class="font-cabin text-2xl text-secondary">Urgency Level</h3>
+                        <div class="flex gap-sm" id="urgency-buttons">
+                            <button type="button" onclick="selectUrgency('PRIORITY', this)"
+                                class="urgency-btn border-2 border-primary px-4 py-1.5 font-mono text-xs font-bold bg-white text-on-surface hover:bg-primary-container transition-all">
+                                Priority
+                            </button>
+                            <button type="button" onclick="selectUrgency('EMERGENCY', this)"
+                                class="urgency-btn border-2 border-primary px-4 py-1.5 font-mono text-xs font-bold bg-white text-on-surface hover:bg-red-100 transition-all">
+                                Emergency
+                            </button>
+                            <button type="button" onclick="selectUrgency('LOW', this)"
+                                class="urgency-btn border-2 border-primary px-4 py-1.5 font-mono text-xs font-bold bg-white text-on-surface hover:bg-surface-container-highest transition-all">
+                                Standard
+                            </button>
+                        </div>
+                        <p id="err-urgency" class="font-mono text-[10px] text-error font-bold hidden">Is it on fire or can it wait? Pick an urgency!</p>
+                    </div>
+
+                    <div class="glass-card p-md border-2 border-primary brutalist-shadow space-y-sm">
+                        <h3 class="font-cabin text-2xl text-secondary">Field Notes</h3>
+                        <textarea id="notes-textarea" required
+                            class="w-full h-32 bg-white border-2 border-primary p-3 font-sans text-xs focus:ring-0 focus:border-forest-moss transition-all outline-none placeholder:text-outline/70"
+                            placeholder="Provide specific details about the issue. Landmarks, time of discovery, and impact on the local ecosystem..."></textarea>
+                    </div>
+
+                    <div class="glass-card p-md border-2 border-primary brutalist-shadow space-y-sm">
+                            <label class="font-mono text-xs text-primary font-bold uppercase">Supporting Evidence (Photo/Video)</label>
+                        <div class="border-2 border-dashed border-primary p-6 text-center space-y-sm hover:bg-primary-container/20 transition-colors cursor-pointer group"
+                            id="dropzone" onclick="triggerFileInput()">
+                            <span
+                                class="material-symbols-outlined text-4xl text-outline group-hover:text-primary">cloud_upload</span>
+                            <p class="font-sans text-xs text-on-surface-variant font-bold">Tap to upload or drag media
+                                here</p>
+                            <p class="font-mono text-[10px] text-outline italic">Max file size 15MB. JPG, PNG accepted.
+                            </p>
+                            <input type="file" id="file-input" class="hidden" accept="image/*"
+                                onchange="handleFileSelect(event)" onclick="event.stopPropagation()" />
+                        </div>
+                        <div id="file-preview-container"
+                            class="hidden border-t border-dashed border-outline-variant pt-xs flex items-center gap-2">
+                            <div class="w-12 h-12 border border-primary bg-cover bg-center" id="file-preview-img"></div>
+                            <span class="font-mono text-[10px] text-primary font-bold"
+                                id="file-preview-name">file.png</span>
+                        </div>
+                    </div>
+
+                    <button
+                        class="w-full border-2 border-primary bg-primary text-white font-cabin text-3xl py-md hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#1a1c1b] transition-all active:translate-y-0 active:shadow-none flex items-center justify-center gap-2"
+                        type="submit">
+                        SUBMIT FIELD REPORT
+                        <span class="material-symbols-outlined">send</span>
+                    </button>
+
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <div id="success-modal"
+        class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-forest-deep/60 backdrop-blur-sm px-margin">
+        <div class="bg-white border-4 border-primary p-8 brutalist-shadow max-w-sm w-full text-center space-y-md">
+            <div
+                class="w-16 h-16 rounded-full border-2 border-primary bg-green-100 flex items-center justify-center text-forest-moss mx-auto shadow-[2px_2px_0px_0px_#1a1c1b]">
+                <span class="material-symbols-outlined text-3xl font-bold">verified</span>
+            </div>
+            <div>
+                <h3 class="font-cabin text-3xl text-primary">Report Logged</h3>
+                <p class="font-mono text-forest-moss font-bold text-xs uppercase tracking-wider mt-1">+10 GCP Awarded!
+                </p>
+            </div>
+            <p class="font-sans text-sm text-on-surface-variant mb-6 text-center" id="success-message">Report logged! Other folks can now see it and help fix it.</p>
+            <button onclick="goToMap()"
+                class="w-full border-2 border-primary bg-primary text-white font-mono text-xs py-3 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#1a1c1b] transition-all font-bold">
+                RETURN TO MAP
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        // User session checks
+        let currentUser = JSON.parse(localStorage.getItem('anek_current_user') || '{"name":"Citizen","username":"citizen"}');
+        
+        let selectedLatitude = '52.5200';
+        let selectedLongitude = '13.4050';
+
+        let reportMap = null;
+        let pickerMarker = null;
+
+        function updateCoordinates(lat, lng) {
+            selectedLatitude = lat.toFixed(4);
+            selectedLongitude = lng.toFixed(4);
+            if (document.getElementById('coordinates-display')) {
+                document.getElementById('coordinates-display').innerText = `${selectedLatitude}° N, ${selectedLongitude}° E`;
+            }
+        }
+
+        function initReportMap(lat, lng) {
+            reportMap = L.map('report-leaflet-map').setView([lat, lng], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(reportMap);
+
+            // Add draggable picker marker
+            pickerMarker = L.marker([lat, lng], {
+                draggable: true
+            }).addTo(reportMap);
+
+            pickerMarker.on('dragend', function (e) {
+                const position = pickerMarker.getLatLng();
+                updateCoordinates(position.lat, position.lng);
+            });
+
+            reportMap.on('click', function (e) {
+                pickerMarker.setLatLng(e.latlng);
+                updateCoordinates(e.latlng.lat, e.latlng.lng);
+            });
+
+            updateCoordinates(lat, lng);
+        }
+
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        initReportMap(lat, lng);
+                    },
+                    (error) => {
+                        console.warn('Geolocation access denied. Using defaults.');
+                        initReportMap(52.5200, 13.4050); // Berlin default
+                    }
+                );
+            } else {
+                initReportMap(52.5200, 13.4050);
+            }
+        }
+
+        getUserLocation();
+
+        async function loadProfile() {
+            try {
+                const response = await apiFetch('/users/profile');
+                if (response && response.ok) {
+                    const data = await response.json();
+                    currentUser.name = data.user.name;
+                    currentUser.username = data.user.username;
+                    localStorage.setItem('anek_current_user', JSON.stringify(currentUser));
+                    
+                    if (document.getElementById('header-username')) document.getElementById('header-username').innerText = '@' + currentUser.username;
+                    if (document.getElementById('profile-name')) document.getElementById('profile-name').innerText = currentUser.name;
+                    if (document.getElementById('profile-username')) document.getElementById('profile-username').innerText = '@' + currentUser.username;
+                    if (document.getElementById('profile-avatar')) document.getElementById('profile-avatar').innerText = currentUser.name.charAt(0).toUpperCase();
+                    if (document.getElementById('user-rank-badge')) document.getElementById('user-rank-badge').innerText = data.user.rank;
+                }
+            } catch (err) {
+                console.error('Error loading profile:', err);
+            }
+        }
+        loadProfile();
+
+        // Other Checkbox Toggle
+        document.getElementById('other-checkbox').addEventListener('change', (e) => {
+            const input = document.getElementById('other-input');
+            if (e.target.checked) {
+                input.classList.remove('hidden');
+                input.focus();
+            } else {
+                input.classList.add('hidden');
+                input.value = '';
+            }
+        });
+
+        // Urgency Button Selector
+        let selectedUrgencyLevel = null;
+        window.selectUrgency = function (level, button) {
+            selectedUrgencyLevel = level;
+            
+            document.querySelectorAll('.urgency-btn').forEach(btn => {
+                btn.classList.remove('active-priority', 'active-emergency', 'active-standard');
+            });
+            
+            if (level === 'PRIORITY') button.classList.add('active-priority');
+            else if (level === 'EMERGENCY') button.classList.add('active-emergency');
+            else button.classList.add('active-standard');
+            
+            document.getElementById('err-urgency').classList.add('hidden');
+        }
+
+        // File Dropzone Logic
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('file-input');
+        const previewContainer = document.getElementById('file-preview-container');
+        const previewImg = document.getElementById('file-preview-img');
+        const previewName = document.getElementById('file-preview-name');
+
+        let selectedFile = null;
+
+        window.triggerFileInput = function () {
+            fileInput.click();
+        }
+
+        window.handleFileSelect = function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                showPreview(file);
+            }
+        }
+
+        function showPreview(file) {
+            selectedFile = file;
+            previewName.innerText = file.name;
+            previewContainer.classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImg.style.backgroundImage = `url('${e.target.result}')`;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // Drag/Drop handling
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('bg-primary-container/20');
+        });
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('bg-primary-container/20');
+        });
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('bg-primary-container/20');
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                showPreview(file);
+            }
+        });
+
+        // Submit Form Handler
+        window.handleReportSubmit = async function (e) {
+            e.preventDefault();
+
+            // Checkboxes validation
+            const checkedBoxes = document.querySelectorAll('input[name="issue-type"]:checked');
+            if (checkedBoxes.length === 0) {
+                alert('Bruh, what kind of issue is this? Pick one!');
+                return;
+            }
+
+            // Urgency validation
+            if (!selectedUrgencyLevel) {
+                alert('Is it on fire or can it wait? Pick an urgency!');
+                return;
+            }
+
+            const notesText = document.getElementById('notes-textarea').value.trim();
+            let category = checkedBoxes[0].value;
+            if (category === 'Other') {
+                const otherVal = document.getElementById('other-input').value.trim();
+                if (otherVal) category = otherVal;
+            }
+
+            const titleText = notesText.split('\n')[0].substring(0, 30) || "Civic Issue reported";
+
+            // Build multipart Form Data for upload
+            const formData = new FormData();
+            formData.append('title', titleText);
+            formData.append('category', category);
+            formData.append('description', notesText);
+            formData.append('urgency', selectedUrgencyLevel);
+            formData.append('latitude', selectedLatitude);
+            formData.append('longitude', selectedLongitude);
+            formData.append('locationName', 'Community Hub');
+
+            if (selectedFile) {
+                formData.append('evidence', selectedFile);
+            }
+
+            try {
+                const response = await apiFetch('/issues', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response && response.ok) {
+                    document.getElementById('success-modal').classList.remove('hidden');
+                } else {
+                    const data = await response.json();
+                    alert(data.message || 'Server error saving report.');
+                }
+            } catch (err) {
+                console.error('Error submitting report:', err);
+                alert('Could not submit report.');
+            }
+        }
+
+        window.goToMap = function () {
+            window.location.href = '/local_impact.html';
+        }
+    </script>
+</body>
+
+</html>

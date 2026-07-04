@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Anek | Impact Log - My Contributions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Manrope:wght@200..800&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="/src/style.css" />
+    <script type="module" src="/src/main.js"></script>
+</head>
+<body class="overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container pinstripe-texture min-h-screen flex flex-col">
+
+    <header class="bg-white h-16 sticky top-0 z-40 border-b-2 border-outline-variant flex justify-between items-center px-margin w-full max-w-full">
+        <div class="flex items-center gap-sm">
+            <button class="material-symbols-outlined text-primary hover:bg-primary-container p-1 border-2 border-transparent hover:border-primary transition-all" id="sidebar-toggle">menu</button>
+            <a href="/" class="font-cabin text-3xl font-bold text-primary tracking-tighter uppercase ml-2 hover:opacity-80 transition-opacity">Anek</a>
+        </div>
+        <div class="flex items-center gap-sm">
+            <div class="hidden sm:flex items-center gap-2 bg-surface-container-low px-3 py-1 border-2 border-primary text-xs font-mono">
+                <span class="w-2.5 h-2.5 rounded-full bg-forest-moss"></span>
+                <span>Active Session: <strong id="header-username">Warden.77</strong></span>
+            </div>
+            <a href="#" onclick="if(confirm('Whoa there, going somewhere? Sure you wanna log out?')) window.location.href='/index.html'; return false;" class="material-symbols-outlined text-on-surface-variant hover:text-red-600 transition-all" title="Logout">logout</a>
+        </div>
+    </header>
+
+    <div class="flex flex-1">
+        
+        <anek-sidebar></anek-sidebar>
+
+        <main class="flex-grow overflow-y-auto bg-surface px-margin py-lg pb-xl md:pb-lg">
+            <div class="max-w-6xl mx-auto space-y-lg">
+
+                <section class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-end">
+                    <div class="md:col-span-8">
+                        <h2 class="font-cabin text-5xl md:text-6xl text-primary mb-xs">My Quests / Activity</h2>
+                        <p class="font-sans text-sm text-on-surface-variant max-w-xl">
+                            Agent ID: #<span id="agent-id">7742</span>-VANGUARD. Everything you've done so far. We keep track of your good deeds.
+                        </p>
+                    </div>
+                    <div class="md:col-span-4 flex justify-start md:justify-end">
+                        <div class="brutalist-card p-sm flex items-center gap-sm bg-primary-container border-2 border-primary">
+                            <div class="w-12 h-12 rounded-full bg-forest-moss border border-primary flex items-center justify-center text-white font-cabin text-lg" id="header-profile-avatar">W</div>
+                            <div>
+                                <p class="font-mono text-[9px] text-on-primary-container/70" id="header-user-rank">Vanguard Rank II</p>
+                                <p class="font-cabin text-xl text-on-primary-container" id="header-user-fullname">Cassian Moss</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+
+                    <div class="lg:col-span-4 space-y-gutter">
+                        <h3 class="font-cabin text-2xl text-primary border-b-2 border-dashed border-outline-variant pb-xs">Vitals</h3>
+                        
+                        <div class="brutalist-card p-md bg-white border-2 border-primary brutalist-shadow">
+                            <p class="font-mono text-[9px] text-on-surface-variant uppercase tracking-wider mb-xs">Issues Fixed</p>
+                            <p class="font-cabin text-5xl text-primary" id="vitals-resolved-count">24</p>
+                            <div class="mt-sm flex gap-1 opacity-70">
+                                <span class="material-symbols-outlined text-sm">brush</span>
+                                <span class="material-symbols-outlined text-sm">build</span>
+                                <span class="material-symbols-outlined text-sm">cleaning_services</span>
+                            </div>
+                        </div>
+
+                        <div class="brutalist-card p-md bg-white border-2 border-primary brutalist-shadow">
+                            <div class="flex justify-between items-center mb-md">
+                                <p class="font-mono text-[9px] text-on-surface-variant uppercase">Progress to Elder</p>
+                                <p class="font-mono text-xs text-primary font-bold" id="progress-pct">82%</p>
+                            </div>
+                            <div class="w-full h-6 border-2 border-primary bg-white relative overflow-hidden">
+                                <div id="progress-bar-fill" class="h-full bg-primary-container w-[82%] border-r-2 border-primary hatch-pattern"></div>
+                            </div>
+                            <p class="font-sans text-xs text-on-surface-variant mt-sm italic">
+                                "<span id="points-to-next">150</span> more impact points to unlock the Elder's Rank."
+                            </p>
+                        </div>
+
+                        <div class="brutalist-card p-md bg-tertiary-container border-2 border-primary brutalist-shadow">
+                            <p class="font-mono text-[9px] text-on-tertiary-container uppercase mb-xs opacity-75">Good Citizen Points (GCP)</p>
+                            <p class="font-cabin text-5xl text-on-tertiary-container" id="vitals-gcp">120</p>
+                            <a href="/rewards.html" class="mt-sm block w-full py-1 text-center border-2 border-primary bg-white text-on-surface font-mono text-xs hover:translate-x-0.5 hover:-translate-y-0.5 transition-transform active:translate-y-0 shadow-[2px_2px_0px_0px_#2d4a3e] font-bold">
+                                Redeem Points
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-8 space-y-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-dashed border-outline-variant pb-xs select-none">
+                            <h3 class="font-cabin text-2xl text-primary flex items-center gap-xs">
+                                <span class="material-symbols-outlined">auto_graph</span> Personal Impact Log
+                            </h3>
+                            <div class="flex gap-2 mt-2 sm:mt-0">
+                                <button onclick="filterLogs('all')" class="px-2 py-0.5 border border-primary text-[10px] font-mono font-bold bg-primary-container text-primary" id="log-filter-all">All</button>
+                                <button onclick="filterLogs('Water')" class="px-2 py-0.5 border border-primary text-[10px] font-mono font-bold bg-white text-primary" id="log-filter-Water">Water</button>
+                                <button onclick="filterLogs('Garbage')" class="px-2 py-0.5 border border-primary text-[10px] font-mono font-bold bg-white text-primary" id="log-filter-Garbage">Garbage</button>
+                                <button onclick="filterLogs('Roads')" class="px-2 py-0.5 border border-primary text-[10px] font-mono font-bold bg-white text-primary" id="log-filter-Roads">Roads</button>
+                            </div>
+                        </div>
+
+                        <div id="log-list-container" class="space-y-sm">
+                            
+                        </div>
+
+                        <a href="/report_problem.html" class="w-full flex items-center justify-center gap-sm brutalist-card p-md bg-primary text-on-primary font-bold shadow-[6px_6px_0px_0px_#2d4a3e] border-2 border-primary">
+                            <span class="material-symbols-outlined">add_circle</span>
+                            <span class="font-cabin text-2xl">LOG NEW ACTION</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center bg-white px-xs py-2 border-t-2 border-primary z-50">
+        <a href="/local_impact.html" class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">map</span>
+            <span class="font-mono text-[9px]">Map</span>
+        </a>
+        <a href="/report_problem.html" class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">edit_note</span>
+            <span class="font-mono text-[9px]">Report</span>
+        </a>
+        <a href="/contribution_log.html" class="flex flex-col items-center justify-center text-primary active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">auto_graph</span>
+            <span class="font-mono text-[9px]">Log</span>
+        </a>
+        <a href="/leaderboard.html" class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">military_tech</span>
+            <span class="font-mono text-[9px]">Leader</span>
+        </a>
+        <a href="/rewards.html" class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">gavel</span>
+            <span class="font-mono text-[9px]">Rewards</span>
+        </a>
+    </nav>
+
+    <footer class="w-full py-md border-t-2 border-dashed border-outline-variant bg-white flex flex-col items-center gap-xs px-margin text-center mb-16 md:mb-0">
+        <div class="font-mono text-xs font-bold text-primary uppercase">ANEK CIVIC NETWORK</div>
+        <p class="font-mono text-[9px] text-on-surface-variant opacity-60">
+            © 2026 Anek Civic Action Network · Hand-crafted for local resilience.
+        </p>
+    </footer>
+
+    <script type="module">
+        // User session checks
+        let currentUser = JSON.parse(localStorage.getItem('anek_current_user') || '{"name":"Citizen","username":"citizen"}');
+        
+        let logs = [];
+        let currentLogFilter = 'all';
+
+        async function loadProfileAndLogs() {
+            try {
+                // 1. Fetch User Profile
+                const profileRes = await apiFetch('/users/profile');
+                if (profileRes && profileRes.ok) {
+                    const profileData = await profileRes.json();
+                    currentUser.name = profileData.user.name;
+                    currentUser.username = profileData.user.username;
+                    localStorage.setItem('anek_current_user', JSON.stringify(currentUser));
+
+                    if (document.getElementById('header-username')) document.getElementById('header-username').innerText = '@' + currentUser.username;
+                    if (document.getElementById('profile-name')) document.getElementById('profile-name').innerText = currentUser.name;
+                    if (document.getElementById('profile-username')) document.getElementById('profile-username').innerText = '@' + currentUser.username;
+                    if (document.getElementById('profile-avatar')) document.getElementById('profile-avatar').innerText = currentUser.name.charAt(0).toUpperCase();
+
+                    document.getElementById('header-user-fullname').innerText = currentUser.name;
+                    document.getElementById('header-profile-avatar').innerText = currentUser.name.charAt(0).toUpperCase();
+
+                    // Mock Agent ID based on username hash
+                    let hash = 0;
+                    for (let i = 0; i < currentUser.username.length; i++) {
+                        hash = currentUser.username.charCodeAt(i) + ((hash << 5) - hash);
+                    }
+                    document.getElementById('agent-id').innerText = Math.abs(hash % 10000);
+
+                    const gcp = profileData.user.points;
+                    const userRank = profileData.user.rank;
+
+                    document.getElementById('vitals-gcp').innerText = gcp;
+                    
+                    let progressPercent = Math.min(100, Math.floor((gcp / 300) * 100));
+                    let pointsToNext = Math.max(0, 300 - gcp);
+
+                    if (document.getElementById('user-rank-badge')) document.getElementById('user-rank-badge').innerText = userRank;
+                    document.getElementById('header-user-rank').innerText = userRank;
+                    document.getElementById('progress-pct').innerText = `${progressPercent}%`;
+                    document.getElementById('progress-bar-fill').style.width = `${progressPercent}%`;
+                    document.getElementById('points-to-next').innerText = pointsToNext;
+                }
+
+                // 2. Fetch Contributions Logs
+                const logsRes = await apiFetch('/contributions');
+                if (logsRes && logsRes.ok) {
+                    const logsData = await logsRes.json();
+                    logs = logsData.contributions;
+                    
+                    const resolvedCount = logs.filter(l => l.activity.includes('Resolved') || l.activity.includes('Repaired') || l.status === 'Verified').length;
+                    document.getElementById('vitals-resolved-count').innerText = resolvedCount;
+
+                    renderLogs();
+                }
+            } catch (err) {
+                console.error('Error loading profile or logs:', err);
+            }
+        }
+
+        function renderLogs() {
+            const container = document.getElementById('log-list-container');
+            container.innerHTML = '';
+
+            const filteredLogs = currentLogFilter === 'all'
+                ? logs
+                : logs.filter(l => l.category === currentLogFilter);
+
+            if (filteredLogs.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white border-2 border-primary border-dashed p-md text-center text-on-surface-variant font-sans text-xs select-none">
+                        Wow, such empty. Go do something!
+                    </div>`;
+                return;
+            }
+
+            filteredLogs.forEach(log => {
+                let icon = 'nature';
+                let iconBg = 'bg-primary-container';
+                let iconColor = 'text-primary';
+
+                if (log.category === 'Water') {
+                    icon = 'water_drop';
+                    iconBg = 'bg-blue-100';
+                    iconColor = 'text-blue-800';
+                } else if (log.category === 'Garbage') {
+                    icon = 'delete_sweep';
+                    iconBg = 'bg-forest-moss/20';
+                    iconColor = 'text-forest-moss';
+                } else if (log.category === 'Roads') {
+                    icon = 'warning';
+                    iconBg = 'bg-red-100';
+                    iconColor = 'text-red-800';
+                } else if (log.category === 'Other') {
+                    icon = 'construction';
+                    iconBg = 'bg-yellow-100';
+                    iconColor = 'text-yellow-800';
+                }
+
+                const item = document.createElement('div');
+                item.className = 'brutalist-card p-sm bg-white border-2 border-primary flex gap-md items-start brutalist-shadow transition-all duration-300';
+                item.innerHTML = `
+                    <div class="shrink-0 w-10 h-10 border border-primary flex items-center justify-center ${iconBg}">
+                        <span class="material-symbols-outlined ${iconColor}">${icon}</span>
+                    </div>
+                    <div class="flex-grow overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-mono text-xs font-bold text-primary truncate mr-2">${log.activity}</h4>
+                            <span class="text-[9px] font-mono text-on-surface-variant whitespace-nowrap">${log.timestamp}</span>
+                        </div>
+                        <div class="mt-2 flex gap-sm items-center select-none">
+                            <span class="px-2 py-0.5 border border-outline-variant bg-surface-container text-[9px] font-mono uppercase">${log.category}</span>
+                            <span class="px-2 py-0.5 border border-primary bg-primary-container text-[9px] font-mono uppercase font-bold text-on-primary-container">${log.points}</span>
+                            <span class="text-[9px] font-mono text-forest-moss flex items-center"><span class="material-symbols-outlined text-[10px] font-bold">check</span> ${log.status}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(item);
+
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translate(-2px, -2px)';
+                    item.style.boxShadow = '6px 6px 0px 0px #2d4a3e';
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translate(0, 0)';
+                    item.style.boxShadow = '4px 4px 0px 0px #2d4a3e';
+                });
+            });
+        }
+
+        window.filterLogs = function(category) {
+            currentLogFilter = category;
+            document.querySelectorAll('[id^="log-filter-"]').forEach(btn => {
+                btn.classList.remove('bg-primary-container', 'text-primary');
+                btn.classList.add('bg-white');
+            });
+            document.getElementById(`log-filter-${category}`).classList.add('bg-primary-container', 'text-primary');
+            renderLogs();
+        };
+
+        // Load data on start
+        loadProfileAndLogs();
+    </script>
+</body>
+</html>

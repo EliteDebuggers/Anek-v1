@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Anek | Civic Map & local Pulse</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Manrope:wght@200..800&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script type="module" src="/src/main.js"></script>
+</head>
+
+<body
+    class="overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container pinstripe-texture min-h-screen flex flex-col">
+
+    <header
+        class="bg-white h-16 sticky top-0 z-40 border-b-2 border-outline-variant flex justify-between items-center px-margin w-full max-w-full">
+        <div class="flex items-center gap-sm">
+            <button
+                class="material-symbols-outlined text-primary hover:bg-primary-container p-1 border-2 border-transparent hover:border-primary transition-all"
+                id="sidebar-toggle">menu</button>
+            <a href="/"
+                class="font-cabin text-3xl font-bold text-primary tracking-tighter uppercase ml-2 hover:opacity-80 transition-opacity">Anek</a>
+        </div>
+        <div class="flex items-center gap-sm">
+            <div
+                class="hidden sm:flex items-center gap-2 bg-surface-container-low px-3 py-1 border-2 border-primary text-xs font-mono">
+                <span class="w-2.5 h-2.5 rounded-full bg-forest-moss"></span>
+                <span>Active Session: <strong id="header-username">Warden.77</strong></span>
+            </div>
+            <a href="#" onclick="if(confirm('Whoa there, going somewhere? Sure you wanna log out?')) window.location.href='/index.html'; return false;"
+                class="material-symbols-outlined text-on-surface-variant hover:text-red-600 transition-all"
+                title="Logout">logout</a>
+        </div>
+    </header>
+
+    <div class="flex flex-1">
+
+        <anek-sidebar></anek-sidebar>
+
+        <main
+            class="flex-grow p-margin md:p-lg space-y-lg bg-background paper-texture transition-all overflow-x-hidden">
+
+            <section class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+                <div>
+                    <h1 class="font-cabin text-5xl md:text-6xl text-primary leading-none select-none">Local Impact
+                        Map</h1>
+                    <p
+                        class="font-sans text-sm text-on-surface-variant mt-4 border-l-4 border-primary pl-4 py-1 italic bg-white/50">
+                        Your local neighborhood watch, but cooler. See what's broken and fix it.
+                    </p>
+                </div>
+                <div class="flex gap-sm">
+                    <div class="brutalist-card brutalist-shadow p-sm bg-white border-2 border-primary min-w-[120px]">
+                        <p class="font-mono text-[9px] text-primary uppercase">Active Reports</p>
+                        <p class="font-cabin text-4xl text-primary mt-1" id="active-count">6</p>
+                    </div>
+                    <div class="brutalist-card brutalist-shadow p-sm bg-white border-2 border-primary min-w-[120px]">
+                        <p class="font-mono text-[9px] text-secondary uppercase">Your GCP Balance</p>
+                        <p class="font-cabin text-4xl text-forest-moss mt-1" id="gcp-display">120</p>
+                    </div>
+                </div>
+            </section>
+
+
+            <div class="flex justify-between items-center mb-md">
+                <button onclick="toggleMap()" id="toggle-map-btn"
+                    class="px-md py-sm border-2 border-primary bg-white text-primary font-mono text-xs font-bold hover:bg-primary-container transition-all brutalist-shadow-sm flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">map</span> Show Geographical Map
+                </button>
+            </div>
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+
+                <div id="map-container"
+                    class="hidden lg:col-span-7 brutalist-card brutalist-shadow min-h-[550px] overflow-hidden group flex-col border-2 border-primary">
+                    <div
+                        class="bg-surface-container px-md py-sm border-b-2 border-primary flex justify-between items-center">
+                        <h3 class="font-mono text-xs text-on-surface flex items-center gap-xs font-bold">
+                            <span class="material-symbols-outlined text-primary">explore</span>
+                            Geospatial Layer
+                        </h3>
+                        <span
+                            class="px-2 py-0.5 border border-primary bg-white text-[9px] font-mono text-primary font-bold">ANEK_MAP_v1.0</span>
+                    </div>
+                    <div id="leaflet-map" class="w-full h-full z-0 min-h-[500px] flex-grow"></div>
+
+                        <div
+                            class="absolute bottom-margin right-margin bg-white border-2 border-primary p-sm flex flex-col gap-xs brutalist-shadow z-10 select-none">
+                            <div class="flex items-center gap-xs">
+                                <div class="w-3 h-3 bg-error border border-primary"></div>
+                                <span class="text-[9px] font-mono text-on-surface font-bold">Roads/Infra</span>
+                            </div>
+                            <div class="flex items-center gap-xs">
+                                <div class="w-3 h-3 bg-yellow-500 border border-primary"></div>
+                                <span class="text-[9px] font-mono text-on-surface font-bold">Animals/Nature</span>
+                            </div>
+                            <div class="flex items-center gap-xs">
+                                <div class="w-3 h-3 bg-forest-moss border border-primary"></div>
+                                <span class="text-[9px] font-mono text-on-surface font-bold">Sanitation/Plastic</span>
+                            </div>
+                        </div>
+                    </div>
+
+                <div id="feed-container" class="lg:col-span-12 max-w-5xl mx-auto w-full space-y-md">
+
+                    <div class="flex justify-between items-center px-xs select-none">
+                        <h2 class="font-cabin text-3xl text-primary">The Board</h2>
+                        <div class="flex gap-2">
+
+                            <button onclick="filterBoard('all')"
+                                class="px-2 py-1 border-2 border-primary text-xs font-mono bg-primary-container text-primary font-bold hover:bg-primary hover:text-white transition-all shadow-[2px_2px_0px_0px_#2d4a3e]"
+                                id="filter-btn-all">All</button>
+                            <button onclick="filterBoard('Roads')"
+                                class="px-2 py-1 border-2 border-primary text-xs font-mono bg-white text-primary font-bold hover:bg-primary-container transition-all shadow-[2px_2px_0px_0px_#2d4a3e]"
+                                id="filter-btn-Roads">Roads</button>
+                            <button onclick="filterBoard('Garbage')"
+                                class="px-2 py-1 border-2 border-primary text-xs font-mono bg-white text-primary font-bold hover:bg-primary-container transition-all shadow-[2px_2px_0px_0px_#2d4a3e]"
+                                id="filter-btn-Garbage">Garbage</button>
+                            <button onclick="filterBoard('Animals')"
+                                class="px-2 py-1 border-2 border-primary text-xs font-mono bg-white text-primary font-bold hover:bg-primary-container transition-all shadow-[2px_2px_0px_0px_#2d4a3e]"
+                                id="filter-btn-Animals">Animals</button>
+                        </div>
+                    </div>
+
+                    <div id="board-feed" class="grid grid-cols-1 md:grid-cols-2 gap-md">
+
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center bg-white px-xs py-2 border-t-2 border-primary z-50">
+        <a href="/local_impact.html"
+            class="flex flex-col items-center justify-center text-primary active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">map</span>
+            <span class="font-mono text-[9px]">Map</span>
+        </a>
+        <a href="/report_problem.html"
+            class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">edit_note</span>
+            <span class="font-mono text-[9px]">Report</span>
+        </a>
+        <a href="/contribution_log.html"
+            class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">auto_graph</span>
+            <span class="font-mono text-[9px]">Log</span>
+        </a>
+        <a href="/leaderboard.html"
+            class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">military_tech</span>
+            <span class="font-mono text-[9px]">Leader</span>
+        </a>
+        <a href="/rewards.html"
+            class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">gavel</span>
+            <span class="font-mono text-[9px]">Rewards</span>
+        </a>
+    </nav>
+
+    <footer
+        class="w-full py-md border-t-2 border-dashed border-outline-variant bg-white flex flex-col items-center gap-xs px-margin text-center mb-16 md:mb-0">
+        <div class="font-mono text-xs font-bold text-primary uppercase">ANEK CIVIC NETWORK</div>
+        <p class="font-mono text-[9px] text-on-surface-variant opacity-60">
+            © 2026 Anek Civic Action Network · Hand-crafted for local resilience.
+        </p>
+    </footer>
+
+    <script type="module">
+        // Check local current user session
+        let currentUser = JSON.parse(localStorage.getItem('anek_current_user') || '{"name":"Citizen","username":"citizen"}');
+
+        if (document.getElementById('header-username')) document.getElementById('header-username').innerText = '@' + currentUser.username;
+        if (document.getElementById('profile-name')) document.getElementById('profile-name').innerText = currentUser.name;
+        if (document.getElementById('profile-username')) document.getElementById('profile-username').innerText = '@' + currentUser.username;
+        if (document.getElementById('profile-avatar')) document.getElementById('profile-avatar').innerText = currentUser.name.charAt(0).toUpperCase();
+
+        let issues = [];
+        let leafletMap = null;
+        let markersLayer = null;
+
+        function initMap(lat, lng) {
+            if (leafletMap) return;
+
+            leafletMap = L.map('leaflet-map', {
+                scrollWheelZoom: false
+            }).setView([lat, lng], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(leafletMap);
+
+            markersLayer = L.layerGroup().addTo(leafletMap);
+        }
+
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        initMap(lat, lng);
+                        fetchIssues();
+                    },
+                    (error) => {
+                        console.warn('Geolocation access denied. Using defaults.');
+                        initMap(52.5200, 13.4050); // Berlin fallback
+                        fetchIssues();
+                    }
+                );
+            } else {
+                initMap(52.5200, 13.4050);
+                fetchIssues();
+            }
+        }
+
+        async function loadUserProfile() {
+            try {
+                const response = await apiFetch('/users/profile');
+                if (response && response.ok) {
+                    const data = await response.json();
+                    currentUser.name = data.user.name;
+                    currentUser.username = data.user.username;
+                    localStorage.setItem('anek_current_user', JSON.stringify(currentUser));
+                    
+                    if (document.getElementById('header-username')) document.getElementById('header-username').innerText = '@' + currentUser.username;
+                    if (document.getElementById('gcp-display')) document.getElementById('gcp-display').innerText = data.user.points;
+                }
+            } catch (err) {
+                console.error('Error loading profile:', err);
+            }
+        }
+
+        async function fetchIssues() {
+            try {
+                const response = await apiFetch('/issues');
+                if (response && response.ok) {
+                    const data = await response.json();
+                    issues = data.issues;
+                    renderFeed();
+
+                    // Retrieve highlight query parameter
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const highlight = urlParams.get('highlight');
+                    if (highlight) {
+                        setTimeout(() => {
+                            highlightFeedPost(highlight);
+                        }, 500);
+                    }
+                }
+            } catch (err) {
+                console.error('Error fetching issues:', err);
+            }
+        }
+
+        let currentFilter = 'all';
+
+        // Render feed posts dynamically
+        function renderFeed() {
+            const feed = document.getElementById('board-feed');
+            feed.innerHTML = '';
+
+            const filteredReports = currentFilter === 'all'
+                ? issues
+                : issues.filter(i => i.category === currentFilter);
+
+            // Update active count badge
+            document.getElementById('active-count').innerText = issues.filter(i => i.status !== 'Completed').length;
+
+            if (filteredReports.length === 0) {
+                feed.innerHTML = `
+                    <div class="bg-white border-2 border-primary border-dashed p-md text-center text-on-surface-variant font-sans text-sm h-full flex items-center justify-center min-h-[200px]">
+                        Looks like this place is clean. No reports here!
+                    </div>
+                `; return;
+            }
+
+            filteredReports.forEach(issue => {
+                const article = document.createElement('article');
+                article.id = `issue-post-${issue.id}`;
+                article.className = `glass-card brutalist-shadow p-md border-2 border-primary transition-all duration-300 flex flex-col justify-between`;
+
+                // Status styles
+                let statusClass = "bg-red-100 text-red-800 border-red-800";
+                if (issue.status === 'In Progress') statusClass = "bg-blue-100 text-blue-800 border-blue-800";
+                if (issue.status === 'Completed') statusClass = "bg-green-100 text-green-800 border-green-800";
+
+                let takeActionBtn = '';
+                if (issue.status === 'Reported') {
+                    takeActionBtn = `<button onclick="takeResponsibility('${issue.id}')" class="px-sm py-1 border-2 border-primary text-[10px] font-mono font-bold brutalist-button-hover bg-primary text-on-primary">TAKE RESPONSIBILITY</button>`;
+                } else if (issue.status === 'In Progress') {
+                    if (issue.responsibleUser === currentUser.username) {
+                        takeActionBtn = `
+                            <div class="flex gap-2">
+                                <button onclick="dropResponsibility('${issue.id}')" class="px-sm py-1 border-2 border-error text-[10px] font-mono font-bold brutalist-button-hover bg-white text-error hover:bg-error hover:text-white transition-all">DROP RESPONSIBILITY</button>
+                                <button onclick="completeIssue('${issue.id}')" class="px-sm py-1 border-2 border-forest-moss text-[10px] font-mono font-bold brutalist-button-hover bg-forest-moss text-white">MARK AS RESOLVED</button>
+                            </div>
+                        `;
+                    } else {
+                        takeActionBtn = `<span class="text-[10px] font-mono text-on-surface-variant italic">Assigned to @${issue.responsibleUser}</span>`;
+                    }
+                } else if (issue.status === 'Completed') {
+                    takeActionBtn = `<span class="text-[10px] font-mono text-forest-moss font-bold flex items-center gap-xs"><span class="material-symbols-outlined text-sm">verified</span> Resolved & Verified</span>`;
+                }
+
+                article.innerHTML = `
+                    <header class="flex justify-between items-start mb-sm select-none">
+                        <div class="flex gap-2">
+                            <div class="w-8 h-8 rounded-full border-2 border-primary bg-primary-container flex items-center justify-center font-cabin text-base text-primary select-none font-bold">
+                                ${issue.author.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <h4 class="font-cabin text-xl text-primary leading-tight">${issue.title}</h4>
+                                <p class="font-mono text-[9px] text-on-surface-variant">@${issue.author} · ${issue.time}</p>
+                            </div>
+                        </div>
+                        <span class="px-1.5 py-0.5 border text-[9px] font-mono uppercase font-bold ${statusClass}">${issue.status}</span>
+                    </header>
+                    <div class="font-sans text-xs text-on-surface mb-md">
+                        ${issue.description}
+                    </div>
+                    
+                    ${(issue.status === 'Completed' || issue.mediaUrl) ? `
+                    <div class="w-full h-24 overflow-hidden border border-primary mb-md select-none">
+                        <img class="w-full h-full object-cover grayscale opacity-70" src="${issue.mediaUrl || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAnijSZyaVNoqF7q4VH4pmtKa2eCsEHhdzISrzDNRK-nssrVCnG5QyiB5WRdmNq-Eb-fDN-4Hu1Fi-_lbmtHCTMuyugnUttkbScra7JOipo_9SZYaKtTi6C6yBfMgy2gCvgfxaYcLq-PatgYup8_l12NX6vvKRGeprEZaEvEpCJeLBomU3O5OM8nlL-2c0DtzsK3CjB4IXKzWvYh-LXFGTNqJGaSEJO5AbyRL3CtlmMVN6LtjDFSTk52WpEhjuxq5Gll6aWeHzAJdo'}"/>
+                    </div>` : ''}
+
+                    <div class="border-t border-dashed border-outline-variant pt-sm flex justify-between items-center select-none">
+                        <div class="flex gap-md">
+                            <button onclick="upvoteIssue('${issue.id}')" class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-sm">thumb_up</span>
+                                <span class="font-mono text-xs font-bold">${issue.votes}</span>
+                            </button>
+                            <button onclick="toggleInlineChat('${issue.id}')" class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-sm">chat_bubble</span>
+                                <span class="font-mono text-xs font-bold">${issue.comments.length}</span>
+                            </button>
+                        </div>
+                        ${takeActionBtn}
+                    </div>
+                    
+                    <div id="chat-inline-${issue.id}" class="hidden flex-col border-t-2 border-primary bg-surface-container-lowest">
+                        <div id="chat-messages-${issue.id}" class="p-sm max-h-60 overflow-y-auto space-y-sm">
+                            <!-- Messages -->
+                        </div>
+                        <div class="p-sm border-t border-primary flex gap-2">
+                            <input type="text" id="chat-input-${issue.id}" class="flex-grow border border-primary px-sm py-1 font-sans text-xs focus:outline-none focus:border-primary" placeholder="Post a reply..." onkeypress="if(event.key === 'Enter') sendInlineChat('${issue.id}')">
+                            <button onclick="sendInlineChat('${issue.id}')" class="px-sm py-1 bg-primary text-white font-mono text-[10px] font-bold border-2 border-primary hover:bg-forest-moss transition-colors">REPLY</button>
+                        </div>
+                    </div>
+                `;
+                feed.appendChild(article);
+            });
+
+            // Plot markers dynamically on the Leaflet map
+            if (markersLayer) {
+                markersLayer.clearLayers();
+
+                filteredReports.forEach(issue => {
+                    const coords = issue.location && issue.location.coordinates 
+                        ? issue.location.coordinates 
+                        : [13.4050, 52.5200];
+                    const lng = coords[0];
+                    const lat = coords[1];
+
+                    let iconName = 'construction';
+                    let iconColor = 'text-primary';
+                    let iconBg = 'bg-primary';
+
+                    if (issue.category === 'Roads') {
+                        iconName = 'warning';
+                        iconColor = 'text-red-800';
+                        iconBg = 'bg-red-100';
+                    } else if (issue.category === 'Garbage') {
+                        iconName = 'delete_sweep';
+                        iconColor = 'text-forest-moss';
+                        iconBg = 'bg-forest-moss/20';
+                    } else if (issue.category === 'Animals') {
+                        iconName = 'pets';
+                        iconColor = 'text-yellow-600';
+                        iconBg = 'bg-yellow-100';
+                    } else if (issue.category === 'Water') {
+                        iconName = 'water_drop';
+                        iconColor = 'text-blue-800';
+                        iconBg = 'bg-blue-100';
+                    }
+
+                    const customIcon = L.divIcon({
+                        className: 'custom-leaflet-marker',
+                        html: `
+                            <div class="p-2 ${iconBg} border-2 border-primary brutalist-shadow rounded-sm flex items-center justify-center -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-transform duration-300 hover:scale-110 shadow-md bg-white">
+                                <span class="material-symbols-outlined ${iconColor} text-sm font-bold">${iconName}</span>
+                            </div>
+                        `,
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16]
+                    });
+
+                    L.marker([lat, lng], { icon: customIcon })
+                        .bindPopup(`
+                            <div class="font-sans p-1 min-w-[150px]">
+                                <h5 class="font-cabin text-sm font-bold text-primary mb-0.5">${issue.title}</h5>
+                                <p class="font-mono text-[8px] text-on-surface-variant mb-1 uppercase tracking-wider">${issue.category} · ${issue.status}</p>
+                                <p class="text-[10px] text-on-surface mb-2">${issue.description.substring(0, 50)}...</p>
+                                <button onclick="highlightFeedPost('${issue.title}')" class="w-full px-sm py-1 border-2 border-primary bg-primary text-white font-mono text-[9px] font-bold hover:bg-forest-moss transition-colors">VIEW ON BOARD</button>
+                            </div>
+                        `)
+                        .addTo(markersLayer);
+                });
+            }
+        }
+
+        // Upvote post function
+        window.upvoteIssue = async function (id) {
+            try {
+                const response = await apiFetch(`/issues/${id}/upvote`, {
+                    method: 'POST'
+                });
+                if (response && response.ok) {
+                    await fetchIssues();
+                }
+            } catch (err) {
+                console.error('Error upvoting:', err);
+            }
+        };
+
+        // Take responsibility of post
+        window.takeResponsibility = async function (id) {
+            if (confirm("You sure you want to handle this? Don't back out later!")) {
+                try {
+                    const response = await apiFetch(`/issues/${id}/take-responsibility`, {
+                        method: 'POST'
+                    });
+                    if (response && response.ok) {
+                        await fetchIssues();
+                    }
+                } catch (err) {
+                    console.error('Error claiming:', err);
+                }
+            }
+        };
+
+        // Drop responsibility of post
+        window.dropResponsibility = async function (id) {
+            if (confirm("Giving up already? You sure you wanna drop this?")) {
+                try {
+                    const response = await apiFetch(`/issues/${id}/drop-responsibility`, {
+                        method: 'POST'
+                    });
+                    if (response && response.ok) {
+                        await fetchIssues();
+                    }
+                } catch (err) {
+                    console.error('Error dropping:', err);
+                }
+            }
+        };
+
+        // Complete the issue and award Good Citizen Points (GCP)
+        window.completeIssue = async function (id) {
+            try {
+                const response = await apiFetch(`/issues/${id}/resolve`, {
+                    method: 'POST'
+                });
+                if (response && response.ok) {
+                    alert("Boom! Issue fixed. You just bagged +50 GCP. You rock!");
+                    await loadUserProfile();
+                    await fetchIssues();
+                }
+            } catch (err) {
+                console.error('Error resolving:', err);
+            }
+        };
+
+        // Filter the board
+        window.filterBoard = function (category) {
+            currentFilter = category;
+            document.querySelectorAll('[id^="filter-btn-"]').forEach(btn => {
+                btn.classList.remove('bg-primary-container', 'text-primary');
+                btn.classList.add('bg-white');
+            });
+            document.getElementById(`filter-btn-${category}`).classList.add('bg-primary-container', 'text-primary');
+            renderFeed();
+        };
+
+        // Highlight feed post from map pin
+        window.highlightFeedPost = function (title) {
+            const found = issues.find(i => i.title.includes(title));
+            if (found) {
+                if (currentFilter !== 'all' && currentFilter !== found.category) {
+                    filterBoard('all');
+                }
+                const post = document.getElementById(`issue-post-${found.id}`);
+                if (post) {
+                    post.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    post.style.borderColor = '#c5a059';
+                    post.style.boxShadow = '8px 8px 0px 0px #c5a059';
+                    setTimeout(() => {
+                        post.style.borderColor = '#2d4d3c';
+                        post.style.boxShadow = '4px 4px 0px 0px #2d4d3c';
+                    }, 2000);
+                }
+            }
+        };
+
+        let mapVisible = false;
+        window.toggleMap = function () {
+            mapVisible = !mapVisible;
+            const mapContainer = document.getElementById('map-container');
+            const feedContainer = document.getElementById('feed-container');
+            const toggleBtn = document.getElementById('toggle-map-btn');
+
+            if (mapVisible) {
+                mapContainer.classList.remove('hidden');
+                mapContainer.classList.add('flex');
+                feedContainer.className = 'lg:col-span-5 space-y-md w-full';
+                document.getElementById('board-feed').className = 'space-y-sm';
+                toggleBtn.innerHTML = '<span class="material-symbols-outlined text-sm">visibility_off</span> Hide Geographical Map';
+                setTimeout(() => {
+                    if (leafletMap) leafletMap.invalidateSize();
+                }, 100);
+            } else {
+                mapContainer.classList.add('hidden');
+                mapContainer.classList.remove('flex');
+                feedContainer.className = 'lg:col-span-12 max-w-5xl mx-auto w-full space-y-md';
+                document.getElementById('board-feed').className = 'grid grid-cols-1 md:grid-cols-2 gap-md';
+                toggleBtn.innerHTML = '<span class="material-symbols-outlined text-sm">map</span> Show Geographical Map';
+            }
+        };
+
+        window.toggleInlineChat = function (id) {
+            const chatBox = document.getElementById(`chat-inline-${id}`);
+            if (chatBox.classList.contains('hidden')) {
+                chatBox.classList.remove('hidden');
+                chatBox.classList.add('flex');
+                renderInlineChatMessages(id);
+            } else {
+                chatBox.classList.add('hidden');
+                chatBox.classList.remove('flex');
+            }
+        };
+
+        window.sendInlineChat = async function (id) {
+            const input = document.getElementById(`chat-input-${id}`);
+            const text = input.value.trim();
+            if (!text) return;
+
+            try {
+                const response = await apiFetch('/comments', {
+                    method: 'POST',
+                    body: JSON.stringify({ issueId: id, text })
+                });
+                if (response && response.ok) {
+                    input.value = '';
+                    await fetchIssues();
+                    
+                    document.getElementById(`chat-inline-${id}`).classList.remove('hidden');
+                    document.getElementById(`chat-inline-${id}`).classList.add('flex');
+                    renderInlineChatMessages(id);
+                }
+            } catch (err) {
+                console.error('Error posting comment:', err);
+            }
+        };
+
+        window.renderInlineChatMessages = function (id) {
+            const issue = issues.find(i => i.id === id);
+            const container = document.getElementById(`chat-messages-${id}`);
+            container.innerHTML = '';
+
+            if (!issue || !issue.comments || issue.comments.length === 0) {
+                container.innerHTML = '<p class="text-center font-mono text-xs text-on-surface-variant italic py-2">No comments yet. Be the first to reply!</p>';
+                return;
+            }
+
+            issue.comments.forEach(comment => {
+                const isMe = comment.author === currentUser.username;
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `flex ${isMe ? 'justify-end' : 'justify-start'}`;
+
+                msgDiv.innerHTML = `
+                    <div class="max-w-[85%] p-2 ${isMe ? 'bg-primary-container text-on-primary-container rounded-tl-lg rounded-bl-lg rounded-tr-sm border border-primary' : 'bg-white text-on-surface rounded-tr-lg rounded-br-lg rounded-tl-sm border border-outline-variant'}">
+                        <p class="font-mono text-[9px] font-bold ${isMe ? 'text-primary' : 'text-on-surface-variant'} mb-0.5">@${comment.author}</p>
+                        <p class="font-sans text-xs">${comment.text}</p>
+                    </div>
+                `;
+                container.appendChild(msgDiv);
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Start initialization
+        loadUserProfile();
+        getUserLocation();
+    </script>
+
+
+
+</body>
+
+</html>
