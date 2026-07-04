@@ -6,8 +6,6 @@
         },
         "backend": {
             "root": "backend"
-            "framework": "express",
-            "runtime": "node",
             "entrypoint": "server.js"
         }
     },
